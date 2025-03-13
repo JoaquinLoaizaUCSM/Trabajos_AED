@@ -6,21 +6,22 @@ public class Verificador
     public static final int DISJUNTOS = 3;
     
     public int verificarRectangulos(Rectangulo rectA, Rectangulo rectB) {
+
+        int rectA_x1 = (int) rectA.getMinX();
+        int rectA_y1 = (int) rectA.getMinY();
+        int rectA_x2 = (int) rectA.getMaxX();
+        int rectA_y2 = (int) rectA.getMaxY();
         
-        if (rectA.getMinX() < rectB.getMaxX() && rectA.getMaxX() > rectB.getMinX() // si se sobreponen en el eje x
+        if (rectA_x1 < rectA_x2() && rectA_x2 > rectA_x1 // si se sobreponen en el eje x
                 && // Y
-            rectA.getMinY() < rectB.getMaxY() && rectA.getMaxY() > rectB.getMinY()) { // se sobreponen en el eje y
+            rectA_y1 < rectA_y2 && rectA_y2 > rectA_y1) { // se sobreponen en el eje y
             return SOBREPONEN;
         }
             
-        else if ((rectA.getMaxX() == rectB.getMinX() && 
-                 !(rectA.getMaxY() < rectB.getMinY() || rectA.getMinY() > rectB.getMaxY())) || 
-                 (rectA.getMinX() == rectB.getMaxX() && 
-                 !(rectA.getMaxY() < rectB.getMinY() || rectA.getMinY() > rectB.getMaxY())) ||
-                 (rectA.getMaxY() == rectB.getMinY() && 
-                 !(rectA.getMaxX() < rectB.getMinX() || rectA.getMinX() > rectB.getMaxX())) ||
-                 (rectA.getMinY() == rectB.getMaxY() && 
-                 !(rectA.getMaxX() < rectB.getMinX() || rectA.getMinX() > rectB.getMaxX()))){
+        else if ((rectA_x2 == rectA_x1 && !(rectA_y2 < rectA_y1 || rectA_y1 > rectA_y2)) || 
+                 (rectA_x1 == rectA_x2 && !(rectA_y2 < rectA_y1 || rectA_y1 > rectA_y2)) ||
+                 (rectA_y2 == rectA_y1 && !(rectA_x2 < rectA_x1 || rectA_x1 > rectA_x2)) ||
+                 (rectA_y1 == rectA_y2 && !(rectA_x2 < rectA_x1 || rectA_x1 > rectA_x2))){
             return JUNTAN;
         }
         
