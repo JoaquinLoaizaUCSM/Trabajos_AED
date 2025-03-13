@@ -8,6 +8,7 @@ public class Rectangulo{
         setEsquina2(c2);
     }
 
+    // setters
     public void setEsquina1(Coordenada coo) {
         this.esquina1 = coo;
     }
@@ -16,6 +17,7 @@ public class Rectangulo{
         this.esquina2 = coo;
     }
 
+    // getters
     public Coordenada getEsquina1() {
         return this.esquina1;
     }
@@ -24,6 +26,7 @@ public class Rectangulo{
         return this.esquina2;
     }
 
+    // sirve para obtener el minimo y maximo de las coordenadas
     public double getMinX() {
         return Math.min(esquina1.getX(), esquina2.getX());
     }
@@ -42,13 +45,13 @@ public class Rectangulo{
 
    
     public double calculoArea() {
-        double ancho = Math.abs(esquina1.getX() - esquina2.getX());
-        double alto = Math.abs(esquina1.getY() - esquina2.getY());
-        return ancho * alto;
+        double ancho = Math.abs(esquina1.getX() - esquina2.getX()); // restamos para obtener la base
+        double alto = Math.abs(esquina1.getY() - esquina2.getY()); // abs para que no importe el orden si el resultado es negativo
+        return ancho * alto; // base * altura
     }
 
     @Override
-    public String toString() {
+    public String toString() { // imprime detalles de el rectangulo
         return "([" + getMinX() + ", " + getMinY() + "], [" + 
                getMaxX() + ", " + getMaxY() + "])";
     }

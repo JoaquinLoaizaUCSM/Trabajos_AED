@@ -1,15 +1,15 @@
 public class Verificador 
 {
-    
-   
-    public static final int SOBREPONEN = 1;
+    // Constantes para los tipos de relacion entre rectangulos
+    public static final int SOBREPONEN = 1; // Se usan para los switch case
     public static final int JUNTAN = 2;
     public static final int DISJUNTOS = 3;
     
     public int verificarRectangulos(Rectangulo rectA, Rectangulo rectB) {
         
-        if (rectA.getMinX() < rectB.getMaxX() && rectA.getMaxX() > rectB.getMinX() && 
-            rectA.getMinY() < rectB.getMaxY() && rectA.getMaxY() > rectB.getMinY()) {
+        if (rectA.getMinX() < rectB.getMaxX() && rectA.getMaxX() > rectB.getMinX() // si se sobreponen en el eje x
+                && // Y
+            rectA.getMinY() < rectB.getMaxY() && rectA.getMaxY() > rectB.getMinY()) { // se sobreponen en el eje y
             return SOBREPONEN;
         }
             
@@ -24,7 +24,7 @@ public class Verificador
             return JUNTAN;
         }
         
-        else 
+        else // en caso no se sobrepongan ni se junten queda solo la opcion de que sean disjuntos
         {
             return DISJUNTOS;
         }
