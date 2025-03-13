@@ -38,16 +38,16 @@ public class Coordenada{
 
     //método de instancia que calcula la distancia euclideana
     double distancia(Coordenada c){
-        double dx = this.x - c.x;
-        double dy = this.y - c.y;
-        return Math.sqrt(dx*dx + dy*dy);
+        double dx = this.x - c.x; // (x2 - x1)
+        double dy = this.y - c.y; // (y2 - y1)
+        return Math.sqrt(dx*dx + dy*dy); // √(dx² + dy²)
     }
 
     //método de clase que calcula la distancia euclideana
     static double distancia(Coordenada c1, Coordenada c2){
-        double dx = c1.x - c2.x;
-        double dy = c1.y - c2.y;
-        return Math.sqrt(dx*dx + dy*dy);
+        double dx = c1.x - c2.x; // (x2 - x1)
+        double dy = c1.y - c2.y; // (y2 - y1)
+        return Math.sqrt(dx*dx + dy*dy); // √(dx² + dy²)
     }
 
     @Override
