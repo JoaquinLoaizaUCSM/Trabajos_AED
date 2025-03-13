@@ -50,11 +50,11 @@ public class ContainerRect
 	{
 		for (int i = 0; i < numrec; i++) 
 		{
-            System.out.println("Rectangulo " + (i + 1) + ": " + rectangulos[i]);
-            System.out.println("Distancia Euclidiana: " + distancias[i]);
-            System.out.println("Area: " + areas[i]);
+	            System.out.println("Rectangulo " + (i + 1) + ": " + rectangulos[i]);
+	            System.out.println("Distancia Euclidiana: " + distancias[i]);
+	            System.out.println("Area: " + areas[i]);
 
-        }
+        	}
 	}
 	
 	@Override
