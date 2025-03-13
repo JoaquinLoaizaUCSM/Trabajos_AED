@@ -40,7 +40,7 @@ public class Rectangulo{
         return Math.max(esquina1.getY(), esquina2.getY());
     }
 
-    // Método para calcular el área del rectángulo
+   
     public double calculoArea() {
         double ancho = Math.abs(esquina1.getX() - esquina2.getX());
         double alto = Math.abs(esquina1.getY() - esquina2.getY());
