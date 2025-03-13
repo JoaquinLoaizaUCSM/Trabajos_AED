@@ -12,9 +12,15 @@ public class Verificador
             rectA.getMinY() < rectB.getMaxY() && rectA.getMaxY() > rectB.getMinY()) {
             return SOBREPONEN;
         }
-       
-        else if (rectA.getMinX() == rectB.getMaxX() || rectA.getMaxX() == rectB.getMinX() || 
-                 rectA.getMinY() == rectB.getMaxY() || rectA.getMaxY() == rectB.getMinY()) {
+            
+        else if ((rectA.getMaxX() == rectB.getMinX() && 
+                 !(rectA.getMaxY() < rectB.getMinY() || rectA.getMinY() > rectB.getMaxY())) || 
+                 (rectA.getMinX() == rectB.getMaxX() && 
+                 !(rectA.getMaxY() < rectB.getMinY() || rectA.getMinY() > rectB.getMaxY())) ||
+                 (rectA.getMaxY() == rectB.getMinY() && 
+                 !(rectA.getMaxX() < rectB.getMinX() || rectA.getMinX() > rectB.getMaxX())) ||
+                 (rectA.getMinY() == rectB.getMaxY() && 
+                 !(rectA.getMaxX() < rectB.getMinX() || rectA.getMinX() > rectB.getMaxX()))){
             return JUNTAN;
         }
         
