@@ -74,7 +74,7 @@ public class ContainerRect
 	    {
 	        String coordenadas = rectangulos[i].toString();
 	        
-	        String distancia = String.format("%.3f", distancias[i]);
+	        String distancia = String.format("%.3f", distancias[i]); //3f o 2f para la cantidad de decimales de distancia o de area
 	        String area = String.format("%.2f", areas[i]);
 	        
 	        sb.append(String.format("%-12d %-30s %-12s %-8s\n", (i + 1), coordenadas, distancia, area));
