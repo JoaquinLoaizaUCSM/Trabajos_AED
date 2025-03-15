@@ -56,5 +56,4 @@ public class Rectangulo{
                getMaxX() + ", " + getMaxY() + "])";
     }
 
-    //prueba
 }
