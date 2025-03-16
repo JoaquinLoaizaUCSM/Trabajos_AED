@@ -64,7 +64,6 @@ public class ContainerRect
 	    StringBuilder sb = new StringBuilder();
 
 	    sb.append(String.format("%-12s %-30s %-12s %-8s\n", "|Rectangulo|", "|Coordenadas|", "|Distancia|", "|Area|")); 
-	    // Metodo Raro de GPT:
 	    // %-12s: Alinea a la izquierda una cadena de 12 caracteres de ancho
 	    // %-30s: Alinea a la izquierda una cadena de 30 caracteres de ancho
 	    // %-12s: Alinea a la izquierda una cadena de 12 caracteres de ancho
