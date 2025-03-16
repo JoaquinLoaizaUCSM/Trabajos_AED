@@ -56,31 +56,30 @@ public class ContainerRect
 
         	}
 	}
-	
+
 	@Override
-	public String toString() 
-	{
-	    
-	    StringBuilder sb = new StringBuilder();
+	public String toString() {
+		// Usa un StringBuilder para construir la salida formateada
+		StringBuilder sb = new StringBuilder();
 
-	    sb.append(String.format("%-12s %-30s %-12s %-8s\n", "|Rectangulo|", "|Coordenadas|", "|Distancia|", "|Area|")); 
-	    // %-12s: Alinea a la izquierda una cadena de 12 caracteres de ancho
-	    // %-30s: Alinea a la izquierda una cadena de 30 caracteres de ancho
-	    // %-12s: Alinea a la izquierda una cadena de 12 caracteres de ancho
-	    // %-8s: Alinea a la izquierda una cadena de 8 caracteres de ancho
-	    
-	    for (int i = 0; i < numrec; i++) 
-	    {
-	        String coordenadas = rectangulos[i].toString();
-	        
-	        String distancia = String.format("%.3f", distancias[i]); //3f o 2f para la cantidad de decimales de distancia o de area
-	        String area = String.format("%.2f", areas[i]);
-	        
-	        sb.append(String.format("%-12d %-30s %-12s %-8s\n", (i + 1), coordenadas, distancia, area));
-	    }
+		// Agrega el encabezado de la tabla con alineación estructurada
+		sb.append(String.format("%-6s %-35s %-10s %-10s\n",
+				"Index", "Coordenadas", "Distancia", "Area"));
 
-	    return sb.toString();
+		// Agrega una línea divisoria para mejorar la legibilidad
+		sb.append("---------------------------------------------------------------\n");
+
+		// Recorre los rectángulos almacenados y agrega sus datos a la tabla
+		for (int i = 0; i < numrec; i++) {
+			sb.append(String.format("%-6d %-35s %-10.2f %-10.2f\n",
+					(i + 1),  // Muestra el índice del rectángulo (desde 1 en lugar de 0 para mayor claridad)
+					rectangulos[i], // Usa el método toString() de Rectangulo para mostrar las coordenadas
+					distancias[i],  // Muestra la distancia con dos decimales
+					areas[i]));  // Muestra el área con dos decimales
+		}
+
+		// Retorna la cadena con la tabla formateada
+		return sb.toString();
 	}
-
 	
 }
