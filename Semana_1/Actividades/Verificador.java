@@ -7,21 +7,28 @@ public class Verificador
     
     public int verificarRectangulos(Rectangulo rectA, Rectangulo rectB) {
 
+        // Recta A
         double rectA_x1 = rectA.getMinX();
-        double rectA_y1 = rectA.getMinY();
         double rectA_x2 = rectA.getMaxX();
+        double rectA_y1 = rectA.getMinY();
         double rectA_y2 = rectA.getMaxY();
 
-        if (rectA_x1 < rectA_x2 && rectA_x2 > rectA_x1 // si se sobreponen en el eje x
+        // Recta B
+        double rectB_x1 = rectB.getMinX();
+        double rectB_x2 = rectB.getMaxX();
+        double rectB_y1 = rectB.getMinY();
+        double rectB_y2 = rectB.getMaxY();
+
+        if (rectA_x1 < rectB_x2 && rectA_x2 > rectB_x1 // si se sobreponen en el eje x
                 && // Y
-            rectA_y1 < rectA_y2 && rectA_y2 > rectA_y1) { // se sobreponen en el eje y
+                rectA_y1 < rectB_y2 && rectA_y2 > rectB_y1) { // se sobreponen en el eje y
             return SOBREPONEN;
         }
-            
-        else if ((rectA_x2 == rectA_x1 && !(rectA_y2 < rectA_y1 || rectA_y1 > rectA_y2)) ||
-                 (rectA_x1 == rectA_x2 && !(rectA_y2 < rectA_y1 || rectA_y1 > rectA_y2)) ||
-                 (rectA_y2 == rectA_y1 && !(rectA_x2 < rectA_x1 || rectA_x1 > rectA_x2)) ||
-                 (rectA_y1 == rectA_y2 && !(rectA_x2 < rectA_x1 || rectA_x1 > rectA_x2))){
+
+        else if ((rectA_x2 == rectB_x1 && !(rectA_y2 < rectB_y1 || rectA_y1 > rectB_y2)) ||
+                (rectA_x1 == rectB_x2 && !(rectA_y2 < rectB_y1 || rectA_y1 > rectB_y2)) ||
+                (rectA_y2 == rectB_y1 && !(rectA_x2 < rectB_x1 || rectA_x1 > rectB_x2)) ||
+                (rectA_y1 == rectB_y2 && !(rectA_x2 < rectB_x1 || rectA_x1 > rectB_x2))) {
             return JUNTAN;
         }
 
@@ -34,7 +41,6 @@ public class Verificador
 
     public Rectangulo calcularSobreposicion(Rectangulo rectA, Rectangulo rectB) {
 
-       
         double x1S = Math.max(rectA.getMinX(), rectB.getMinX());
         double y1S = Math.max(rectA.getMinY(), rectB.getMinY());
         double x2S = Math.min(rectA.getMaxX(), rectB.getMaxX());
