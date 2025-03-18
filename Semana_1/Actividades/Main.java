@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class Main 
 {
-    
     public static void mostrarRectangulo(Rectangulo rect, String nombre) 
     {
         System.out.println("Rectangulo " + nombre + " = " + rect.toString());
@@ -40,35 +39,27 @@ public class Main
         
         scanner.close();
         
-        
         System.out.println("\n--- Resultados ---");
-        
         
         mostrarRectangulo(rectanguloA, "A");
         mostrarRectangulo(rectanguloB, "B");
-        
-       
-        Verificador verificador = new Verificador();
-        int caso = verificador.verificarRectangulos(rectanguloA, rectanguloB);
-        
-    
-        switch (caso) 
+
+        // Verificamos el caso del rectangulo con los metodos de clase
+        if (Verificador.esSobrePos(rectanguloA, rectanguloB))
         {
-            case Verificador.SOBREPONEN:
-                System.out.println("Rectangulos A y B se sobreponen.");
-               
-                Rectangulo sobreposicion = verificador.calcularSobreposicion(rectanguloA, rectanguloB);
-                double areaSobreposicion = sobreposicion.calculoArea();
-                System.out.println("Area de sobreposicion = " + df.format(areaSobreposicion));
-                break;
-            case Verificador.JUNTAN:
-                System.out.println("Rectangulos A y B se juntan.");
-                break;
-            case Verificador.DISJUNTOS:
-                System.out.println("Rectangulos A y B son disjuntos.");
-                break;
+            System.out.println("Rectangulos A y B se sobreponen.");
+            Rectangulo sobreposicion = Verificador.calcularSobreposicion(rectanguloA, rectanguloB);
+            double areaSobreposicion = sobreposicion.calculoArea();
+            System.out.println("Area de sobreposicion = " + df.format(areaSobreposicion));
         }
-        
+        else if (Verificador.esJunto(rectanguloA, rectanguloB))
+        {
+            System.out.println("Rectangulos A y B se juntan.");
+        }
+        else if (Verificador.esDisjunto(rectanguloA, rectanguloB))
+        {
+            System.out.println("Rectangulos A y B son disjuntos.");
+        }
 
         System.out.println(container.toString());
 
