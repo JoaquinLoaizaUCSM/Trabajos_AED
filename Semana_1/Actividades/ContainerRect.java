@@ -1,3 +1,5 @@
+package Trabajos_AED.Semana_1.Actividades;
+
 
 public class ContainerRect 
 {
@@ -5,7 +7,6 @@ public class ContainerRect
 	private double[] distancias;
 	private double[] areas;
 	private int n;
-	private int contador;
 	private static int numrec = 0; 
 	
 	public ContainerRect(int n)
@@ -14,7 +15,6 @@ public class ContainerRect
 		this.rectangulos = new Rectangulo[n];
 		this.distancias = new double[n];
 		this.areas = new double[n];
-		this.contador = 0;
 		
 	}
 	
