@@ -50,7 +50,7 @@ public class Rectangulo{
         double alto = Math.abs(esquina1.getY() - esquina2.getY()); // abs para que no importe el orden si el resultado es negativo
         return ancho * alto; // base * altura
     }
-    
+
     @Override
     public String toString() { // imprime detalles de el rectangulo
         return "([" + getMinX() + ", " + getMinY() + "], [" + 
