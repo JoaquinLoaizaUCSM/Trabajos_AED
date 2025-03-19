@@ -1,5 +1,3 @@
-package Trabajos_AED.Semana_1.Actividades;
-
 
 public class ContainerRect 
 {
