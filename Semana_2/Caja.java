@@ -1,22 +1,46 @@
-package Semana_2;
 
-public class Caja<T> {
-    // atributo generico de lo que contiene
-    private T contenido;
-    // coonstructor
-    public Caja(T contenido){
-        this.contenido = contenido;
+public class Caja<T>
+{
+    private T elemento;
+    private String color;
+
+    public Caja(T _elemento,String _color)
+    {
+        this.color = _color;
+        this.elemento = _elemento;
     }
-    // retorne elemento generico
-    public T getContenido(){
-        return contenido;
+
+    public String getColor() 
+    {
+        return color;
     }
-    //setter generico
-    public void setContenido(T contenido){
-        this.contenido = contenido;
+
+    public void setColor(String _color) 
+    {
+        this.color = _color;
     }
+
+    public T getElemento() 
+    {
+        return elemento;
+    }
+
+    public void setElemento(T _elemento) 
+    {
+        this.elemento = _elemento;
+    }
+
+    @Override
+    public String toString() 
+    {
+        return color;
+    }
+    
+    public String getContenidoToString() 
+    {
+        return elemento.toString();
+    }
+    
 }
 
-
-
-
+///Prueba
