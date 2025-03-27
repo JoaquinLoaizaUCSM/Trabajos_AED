@@ -1,5 +1,3 @@
-
-
 public class TestGen 
 {
     public static <T> boolean exist(T[] array, T element)

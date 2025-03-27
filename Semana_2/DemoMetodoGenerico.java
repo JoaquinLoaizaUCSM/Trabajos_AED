@@ -1,5 +1,3 @@
-package Semana_2;
-
 class DemoMetodoGenerico {
     static <T extends Comparable<T>> boolean igualArrays (T[] x, T[] y){
 //Si las longitudes de los array son diferentes,

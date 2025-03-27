@@ -1,4 +1,3 @@
-
 public class Caja<T>
 {
     private T elemento;
