@@ -1,75 +1,60 @@
 import java.util.*;
 
-public class moda3
-{
+public class Moda3 {
 
-    static class Limits 
-    {
+    static class Limits {
         int[] a;
         int prim;
         int ult;
-        
-        public Limits(int[] a, int prim, int ult) 
-        {
+
+        public Limits(int[] a, int prim, int ult) {
             this.a = a;
             this.prim = prim;
             this.ult = ult;
         }
     }
 
-    static class SetVectors 
-    {
+    static class SetVectors {
         private List<Limits> set;
 
-        public SetVectors() 
-        {
+        public SetVectors() {
             set = new ArrayList<>();
         }
 
-        public void insertar(Limits p) 
-        {
+        public void insertar(Limits p) {
             set.add(p);
         }
 
-        public Limits mayor() 
-        {
+        public Limits mayor() {
             Limits mayor = null;
-            for (Limits l : set) 
-            {
-                if (mayor == null || (l.ult - l.prim) > (mayor.ult - mayor.prim)) 
-                {
+            for (Limits l : set) {
+                if (mayor == null || (l.ult - l.prim) > (mayor.ult - mayor.prim)) {
                     mayor = l;
                 }
             }
             return mayor;
         }
 
-        public boolean esVacio() 
-        {
+        public boolean esVacio() {
             return set.isEmpty();
         }
 
-        public int longMayor() 
-        {
+        public int longMayor() {
             if (set.isEmpty()) return 0;
             return (mayor().ult - mayor().prim);
         }
 
-        public void destruir() 
-        {
+        public void destruir() {
             set.clear();
         }
     }
 
-    public static void pivote2(int[] a, int mediana, int prim, int ult, int[] izq, int[] der) 
-    {
+    public static void pivote2(int[] a, int mediana, int prim, int ult, int[] izq, int[] der) {
         int i = prim, j = ult;
-        while (i <= j) 
-        {
+        while (i <= j) {
             while (a[i] < mediana) i++;
             while (a[j] > mediana) j--;
-            if (i <= j) 
-            {
+            if (i <= j) {
                 int temp = a[i];
                 a[i] = a[j];
                 a[j] = temp;
@@ -81,8 +66,7 @@ public class moda3
         der[0] = j;
     }
 
-    public static int moda3(int[] a, int prim, int ult)
-     {
+    public static int moda3(int[] a, int prim, int ult) {
         Limits p, p1, p2, p3;
         SetVectors homogeneo = new SetVectors();
         SetVectors heterogeneo = new SetVectors();
@@ -92,12 +76,12 @@ public class moda3
         p = new Limits(a, prim, ult);
         heterogeneo.insertar(p);
 
-        while (heterogeneo.longMayor() > homogeneo.longMayor()) 
-        {
+        while (heterogeneo.longMayor() > homogeneo.longMayor()) {
             p = heterogeneo.mayor();
             mediana = a[(p.prim + p.ult) / 2];
             pivote2(a, mediana, p.prim, p.ult, izq, der);
-            
+
+            // Crear los tres subvectores
             p1 = new Limits(a, p.prim, izq[0] - 1);
             p2 = new Limits(a, izq[0], der[0]);
             p3 = new Limits(a, der[0] + 1, p.ult);
@@ -113,5 +97,11 @@ public class moda3
         heterogeneo.destruir();
         homogeneo.destruir();
         return a[p.prim];
+    }
+
+    public static void main(String[] args) {
+        int[] a = {1, 2, 2, 3, 3, 3, 4, 5, 6};
+        int resultado = moda3(a, 0, a.length - 1);
+        System.out.println("La moda es: " + resultado);
     }
 }
