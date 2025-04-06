@@ -3,7 +3,7 @@ package Semana_4;
 public class Hanoi {
 
     public static void main(String[] args) {
-        System.out.println("Total de movientes reazados: " + resoluHanoi(5, 'O', 'T', 'D'));
+        System.out.println("Total de movimientos realizados: " + resoluHanoi(5, 'O', 'T', 'D'));
         
     }
     public static int resoluHanoi(int disco, char torre1, char torre2, char torre3){
