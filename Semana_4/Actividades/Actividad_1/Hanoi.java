@@ -1,4 +1,4 @@
-package Semana_4;
+package Actividades.Actividad_1;
 
 public class Hanoi {
 
