@@ -1,4 +1,3 @@
-
 public static int moda2 (int array[])
 {
     int first = 1;// El primer índice a comparar (empieza en 1 porque comparamos con el anterior)
