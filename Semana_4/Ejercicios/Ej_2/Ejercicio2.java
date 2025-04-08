@@ -9,6 +9,25 @@ public class Ejercicio2 {
 //        System.out.println("El " + k + "° elemento más pequeño es: " + result);
 //
 
+        // Caso 1
+        int[] arr1 = {4, 2, 7, 10, 4, 17};
+        int k1 = 3;
+        System.out.println("Resultado caso 1: " + quickSelect(arr1, 0, arr1.length - 1, k1)); // Esperado: 4
+
+        // Caso 2
+        int[] arr2 = {4, 2, 7, 10, 4, 1, 6};
+        int k2 = 5;
+        System.out.println("Resultado caso 2: " + quickSelect(arr2, 0, arr2.length - 1, k2)); // Esperado: 6
+
+        // Caso 3
+        int[] arr3 = {4, 2, 7, 1, 4, 6};
+        int k3 = 1;
+        System.out.println("Resultado caso 3: " + quickSelect(arr3, 0, arr3.length - 1, k3)); // Esperado: 1
+
+        // Caso 4
+        int[] arr4 = {9, 2, 7, 1, 7};
+        int k4 = 4;
+        System.out.println("Resultado caso 4: " + quickSelect(arr4, 0, arr4.length - 1, k4)); // Esperado: 7
     }
 
     public static int quickSelect(int[] arr, int left, int right, int k) {
