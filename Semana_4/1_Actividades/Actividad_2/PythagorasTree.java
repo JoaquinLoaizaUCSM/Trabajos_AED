@@ -1,3 +1,5 @@
+package Actividad_2;
+
 import javax.swing.*;
 import java.awt.*;
 
