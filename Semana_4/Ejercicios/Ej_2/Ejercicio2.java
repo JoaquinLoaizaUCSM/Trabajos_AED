@@ -35,7 +35,7 @@ public class Ejercicio2 {
             return arr[left]; // solo hay un elemento
         }
 
-        int pivotIndex = partition(arr, left, right);
+        int pivotIndex = partition(arr, left, right); // indice en que quedo el pivote
 
         int count = pivotIndex - left + 1; // cuántos elementos hay en la izquierda (incluyendo el pivote)
 
