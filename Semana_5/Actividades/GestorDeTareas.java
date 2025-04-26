@@ -24,5 +24,34 @@ public class GestorDeTareas<T> {
         }
     }
 
+    boolean eliminarTarea(T tarea) {
+        if (first == null) {
+            return false; // La lista está vacía
+        }
+
+        // Caso especial: si la tarea está en el primer nodo
+        if (first.data.equals(tarea)) {
+            first = first.next; // Eliminamos el primer nodo
+            return true;
+        }
+
+        // Caso general: buscar el nodo antes del que queremos eliminar
+        Node<T> current = first;
+        while (current.next != null && !current.next.data.equals(tarea)) {
+            current = current.next;
+        }
+
+        // Si encontramos la tarea
+        if (current.next != null) {
+            current.next = current.next.next; // Eliminamos el nodo
+            return true;
+        }
+
+        // Si no encontramos la tarea
+        return false;
+    }
+
+
+
 
 }
