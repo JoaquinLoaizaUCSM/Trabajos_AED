@@ -1,6 +1,6 @@
 package Actividades;
 
-public class GestorDeTareas<T> {
+public class GestorDeTareas<T extends Comparable<T>> {
     private Node<T> first;
 
     public GestorDeTareas(){
@@ -80,26 +80,18 @@ public class GestorDeTareas<T> {
         return contador;
     }
 
-    T obtenerTareaMasPrioritaria() {
+    public T obtenerTareaMasPrioritaria() {
         if (first == null) {
-            return null; // No hay tareas
+            return null;
         }
-
         Node<T> current = first;
-        T tareaMaxima = null;
-        int prioridadMaxima = Integer.MIN_VALUE;
-
+        T tareaMaxima = first.data;
         while (current != null) {
-            if (current.data instanceof Tarea) { // Verificamos si es tipo Tarea ya que los atributos son de esa clase
-                Tarea tarea = (Tarea) current.data;
-                if (tarea.getPrioridad() > prioridadMaxima) {
-                    prioridadMaxima = tarea.getPrioridad();
-                    tareaMaxima = current.data;
-                }
+            if (current.data.compareTo(tareaMaxima) > 0) {
+                tareaMaxima = current.data;
             }
             current = current.next;
         }
-
         return tareaMaxima;
     }
 

@@ -1,6 +1,6 @@
 package Actividades;
 
-public class Tarea {
+public class Tarea implements Comparable<Tarea> {
     private String titulo;
     private int prioridad; // Mayor número = Mayor prioridad
 
@@ -26,5 +26,24 @@ public class Tarea {
                "titulo='" + titulo + '\'' +
                ", prioridad=" + prioridad +
                '}';
+    }
+
+    @Override
+    public int compareTo(Tarea o) {
+        int cmp = Integer.compare(this.prioridad, o.prioridad);
+        return (cmp != 0) ? cmp : this.titulo.compareToIgnoreCase(o.titulo);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Tarea)) return false;
+        Tarea other = (Tarea) o;
+        if (titulo != null) {
+            if (!titulo.equals(other.titulo)) return false;
+        } else if (other.titulo != null) {
+            return false;
+        }
+        return prioridad == other.prioridad;
     }
 }
