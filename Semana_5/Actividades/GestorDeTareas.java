@@ -152,5 +152,66 @@ public class GestorDeTareas<T extends Comparable<T>> {
     }
 
 
+    // Ejercicio 5
+    public static <T> boolean sonIguales(Node<T> head1, Node<T> head2) {
+        Node<T> actual1 = head1;
+        Node<T> actual2 = head2;
 
+        while (actual1 != null && actual2 != null) {
+            if (actual1.data == null) {
+                if (actual2.data != null) {
+                    return false;
+                }
+            } else if (!actual1.data.equals(actual2.data)) {
+                return false;
+            }
+            actual1 = actual1.next;
+            actual2 = actual2.next;
+        }
+
+        // Si ambas listas llegaron al final al mismo tiempo, son iguales.
+        return actual1 == null && actual2 == null;
+    }
+
+
+    // Ejercicio 6
+    public static <T> Node<T> concatenarListas(Node<T> head1, Node<T> head2) {
+    if (head1 == null && head2 == null) {
+        return null;
+    }
+
+    Node<T> nuevaCabeza = null;
+    Node<T> colaNueva = null;
+    Node<T> actual = head1;
+
+    // Copiar la primera lista
+    while (actual != null) {
+        Node<T> nuevoNodo = new Node<>(actual.data);
+        if (nuevaCabeza == null) {
+            nuevaCabeza = nuevoNodo;
+            colaNueva = nuevoNodo;
+        } else {
+            colaNueva.next = nuevoNodo;
+            colaNueva = nuevoNodo;
+        }
+        actual = actual.next;
+    }
+
+    // Copiar la segunda lista
+    actual = head2;
+    while (actual != null) {
+            Node<T> nuevoNodo = new Node<>(actual.data);
+            if (nuevaCabeza == null) { // Si la primera lista era null
+                nuevaCabeza = nuevoNodo;
+                colaNueva = nuevoNodo;
+            } else {
+                colaNueva.next = nuevoNodo;
+                colaNueva = nuevoNodo;
+            }
+            actual = actual.next;
+    }
+
+    return nuevaCabeza;
+
+    }
 }

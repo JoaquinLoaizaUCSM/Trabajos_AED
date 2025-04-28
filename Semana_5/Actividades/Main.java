@@ -73,12 +73,14 @@ public class Main
        }
 
 
-       //Contar Nodos proporcionando un nodo cabeza
-       System.out.println("Numero de Nodos: " + GestorDeTareas.ContarNodos(tareasPendientes.ObtenerPrimero()));
-       //Insertal al final de la lista una tarea 
-       tareasPendientes.InsertarAlFinal(tareasPendientes.ObtenerPrimero(), new Tarea("Estudiar Listas Enlazadas", 4));
-       //Cuenta nuevamente los nodos depues de añadir una nueva tarea 
-       System.out.println("Numero de Nodos: " + GestorDeTareas.ContarNodos(tareasPendientes.ObtenerPrimero()));
-       
+           //Contar Nodos proporcionando un nodo cabeza
+           // Explicitly specify the type parameter <Tarea> for the static generic method call
+           System.out.println("Numero de Nodos: " + GestorDeTareas.<Tarea>ContarNodos(tareasPendientes.ObtenerPrimero()));
+           //Insertal al final de la lista una tarea
+           tareasPendientes.InsertarAlFinal(tareasPendientes.ObtenerPrimero(), new Tarea("Estudiar Listas Enlazadas", 4));
+           //Cuenta nuevamente los nodos depues de añadir una nueva tarea
+           // Explicitly specify the type parameter <Tarea> for the static generic method call
+           System.out.println("Numero de Nodos: " + GestorDeTareas.<Tarea>ContarNodos(tareasPendientes.ObtenerPrimero()));
+
    }
 }
