@@ -3,8 +3,14 @@ package Actividades;
 public class GestorDeTareas<T extends Comparable<T>> {
     private Node<T> first;
 
-    public GestorDeTareas(){
+    public GestorDeTareas()
+    {
         this.first = null;
+    }
+
+    public Node<T> ObtenerPrimero() //Metodo para obtener el primer nodo de la lista ya que el atributo es privado
+    {
+        return first;
     }
 
     void agregarTarea(T tarea) { // se agrega una tarea al final de la lista
@@ -111,5 +117,40 @@ public class GestorDeTareas<T extends Comparable<T>> {
 
         first = anterior; // El nuevo primero es el último que habíamos leído
     }
+
+
+    //Ejercicio 3 Y 4
+    //Metodo que inserta al final un elemento 
+    //Recibe y rentorna un nodocabeza (es decir una lista completa) 
+    public Node<T> InsertarAlFinal(Node<T> NodoCabeza, T dato)
+    {
+        Node<T> newnode = new Node<T>(dato);
+        if (NodoCabeza == null) { return newnode;}
+        else
+        {   
+            Node<T> nodoActual = NodoCabeza;
+            while (nodoActual.next != null) // Verifica si el SIGUIENTE del ACTUAL es null
+            {
+                nodoActual = nodoActual.next;
+            }
+            nodoActual.next = newnode;
+            return NodoCabeza;
+        }
+ 
+    }
+
+    public static <T> int ContarNodos(Node<T> NodoCabeza)
+    {
+        int contador = 0;
+        Node<T> nodoActual = NodoCabeza;
+        while (nodoActual != null) //Verifica si el ACTUAL es null
+        {
+            contador++;
+            nodoActual = nodoActual.next;
+        }
+        return contador;
+    }
+
+
 
 }

@@ -1,6 +1,7 @@
 package Actividades;
 
-public class Main {
+public class Main 
+{
        public static void main(String[] args) {
                // Crear instancias
        GestorDeTareas<Tarea> tareasPendientes = new GestorDeTareas<>();
@@ -70,5 +71,14 @@ public class Main {
        } else {
            System.out.println("No hay tareas pendientes para mostrar prioridad.");
        }
+
+
+       //Contar Nodos proporcionando un nodo cabeza
+       System.out.println("Numero de Nodos: " + GestorDeTareas.ContarNodos(tareasPendientes.ObtenerPrimero()));
+       //Insertal al final de la lista una tarea 
+       tareasPendientes.InsertarAlFinal(tareasPendientes.ObtenerPrimero(), new Tarea("Estudiar Listas Enlazadas", 4));
+       //Cuenta nuevamente los nodos depues de añadir una nueva tarea 
+       System.out.println("Numero de Nodos: " + GestorDeTareas.ContarNodos(tareasPendientes.ObtenerPrimero()));
+       
    }
 }
