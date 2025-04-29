@@ -1,7 +1,7 @@
-package Ejercicios;
+package Actividades;
 
 public class LinkedList<T extends Comparable<T>> implements TDAList<T> {
-    protected Node<T> first;
+    public Node<T> first;
     protected int size;
 
     public LinkedList() {

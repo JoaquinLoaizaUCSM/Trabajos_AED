@@ -1,5 +1,8 @@
 package Ejercicios;
 
+import Actividades.LinkedList;
+import Actividades.Node;
+
 public class ListUtils {
     public static <T extends Comparable<T>> boolean buscarElemento(LinkedList<T> lista, T elemento) {
         return lista.search(elemento) != -1;

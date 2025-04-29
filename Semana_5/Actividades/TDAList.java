@@ -1,4 +1,4 @@
-package Ejercicios;
+package Actividades;
 
 public interface TDAList<T> {
     boolean isEmptyList();
