@@ -50,64 +50,40 @@ public class ListUtils {
     }
 
     // Ejercicio 5: comparar si dos listas son iguales
-    public static <T> boolean sonIguales(Node<T> head1, Node<T> head2) {
-        Node<T> actual1 = head1;
-        Node<T> actual2 = head2;
+
+    public static <T extends Comparable<T>> boolean sonIguales(LinkedList<T> lista1, LinkedList<T> lista2) {
+        Node<T> actual1 = lista1.first;
+        Node<T> actual2 = lista2.first;
 
         while (actual1 != null && actual2 != null) {
-            if (actual1.getData() == null) {
-                if (actual2.getData() != null) {
-                    return false;
-                }
-            } else if (!actual1.getData().equals(actual2.getData())) {
+            T d1 = actual1.getData();
+            T d2 = actual2.getData();
+            // usar el comparador para determinar igualdad
+            if (!d2.equals(d1)) {
                 return false;
             }
             actual1 = actual1.getNext();
             actual2 = actual2.getNext();
         }
 
-        // Si ambas listas llegaron al final al mismo tiempo, son iguales
+        // verificar que ambas listas terminen simultáneamente
         return actual1 == null && actual2 == null;
     }
 
     // Ejercicio 6: concatenar listas
-    public static <T> Node<T> concatenarListas(Node<T> head1, Node<T> head2) {
-        if (head1 == null && head2 == null) {
-            return null;
-        }
-
-        Node<T> nuevaCabeza = null;
-        Node<T> colaNueva = null;
-        Node<T> actual = head1;
-
-        // Copiar primera lista
+    public static <T extends Comparable<T>> LinkedList<T> concatenarListas(LinkedList<T> lista1, LinkedList<T> lista2) {
+        LinkedList<T> nuevaLista = new LinkedList<>();
+        Node<T> actual = lista1.first;
         while (actual != null) {
-            Node<T> nuevoNodo = new Node<>(actual.getData());
-            if (nuevaCabeza == null) {
-                nuevaCabeza = nuevoNodo;
-                colaNueva = nuevoNodo;
-            } else {
-                colaNueva.setNext(nuevoNodo);
-                colaNueva = nuevoNodo;
-            }
+            nuevaLista.insertLast(actual.getData());
             actual = actual.getNext();
         }
-
-        // Copiar segunda lista
-        actual = head2;
+        actual = lista2.first;
         while (actual != null) {
-            Node<T> nuevoNodo = new Node<>(actual.getData());
-            if (nuevaCabeza == null) { // Si la primera lista era null
-                nuevaCabeza = nuevoNodo;
-                colaNueva = nuevoNodo;
-            } else {
-                colaNueva.setNext(nuevoNodo);
-                colaNueva = nuevoNodo;
-            }
+            nuevaLista.insertLast(actual.getData());
             actual = actual.getNext();
         }
-
-        return nuevaCabeza;
+        return nuevaLista;
     }
 
 }
