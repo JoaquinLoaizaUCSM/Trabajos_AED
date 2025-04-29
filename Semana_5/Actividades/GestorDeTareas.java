@@ -160,9 +160,9 @@ public class GestorDeTareas<T extends Comparable<T>> {
         while (actual1 != null && actual2 != null) {
             if (actual1.data == null) {
                 if (actual2.data != null) {
-                    return false;
+                    return false;  //Si el dato en actual1 es null pero el dato en actual2 no lo es ( Son diferentes )
                 }
-            } else if (!actual1.data.equals(actual2.data)) {
+            } else if (!actual1.data.equals(actual2.data)) { //Comprueba si los datos NO son iguales
                 return false;
             }
             actual1 = actual1.next;
@@ -180,31 +180,32 @@ public class GestorDeTareas<T extends Comparable<T>> {
         return null;
     }
 
-    Node<T> nuevaCabeza = null;
-    Node<T> colaNueva = null;
-    Node<T> actual = head1;
+    Node<T> nuevaCabeza = null; // Comienzo de la nueva lista
+    Node<T> colaNueva = null;   // Ultimo nodo para ir conectando
+    Node<T> actual = head1;     // Usado para recorrer las listas
 
     // Copiar la primera lista
     while (actual != null) {
-        Node<T> nuevoNodo = new Node<>(actual.data);
+        Node<T> nuevoNodo = new Node<>(actual.data); // Copia del nodo
         if (nuevaCabeza == null) {
-            nuevaCabeza = nuevoNodo;
-            colaNueva = nuevoNodo;
+            nuevaCabeza = nuevoNodo; // Primer nodo de la nueva lista
+            colaNueva = nuevoNodo;   // Tambien es el ultimo por ahora
         } else {
-            colaNueva.next = nuevoNodo;
-            colaNueva = nuevoNodo;
+            colaNueva.next = nuevoNodo; // Conectar nuevo nodo al final
+            colaNueva = nuevoNodo; // Mover el "final" al nuevo nodo
         }
-        actual = actual.next;
+        actual = actual.next; 
     }
 
     // Copiar la segunda lista
     actual = head2;
     while (actual != null) {
             Node<T> nuevoNodo = new Node<>(actual.data);
-            if (nuevaCabeza == null) { // Si la primera lista era null
+            if (nuevaCabeza == null) {   // Si la lista nueva aun está vacia 
                 nuevaCabeza = nuevoNodo;
                 colaNueva = nuevoNodo;
             } else {
+                // Conectar el nuevo nodo al final de la lista nueva
                 colaNueva.next = nuevoNodo;
                 colaNueva = nuevoNodo;
             }
