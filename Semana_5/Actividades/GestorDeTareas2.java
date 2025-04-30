@@ -60,14 +60,17 @@ public class GestorDeTareas2<T extends Comparable<T>> {
     }
 
     void invertirTareas() {
-        LinkedList<T> listaInvertida = new LinkedList<>();
+        Node<T> anterior = null;
         Node<T> actual = listaTareas.first;
+        Node<T> siguiente;
 
         while (actual != null) {
-            listaInvertida.insertFirst(actual.getData()); // Insertar siempre al principio
-            actual = actual.getNext();
+            siguiente = actual.next;   // Guardamos el siguiente
+            actual.next = anterior;    // Invertimos el enlace
+            anterior = actual;         // Movemos anterior hacia adelante
+            actual = siguiente;        // Movemos actual hacia adelante
         }
 
-        this.listaTareas = listaInvertida; // Reemplazamos la lista original por la invertida
+        listaTareas.first = anterior; // El nuevo primero es el último que habíamos leídothis.listaTareas = listaInvertida; // Reemplazamos la lista original por la invertida
     }
 }
