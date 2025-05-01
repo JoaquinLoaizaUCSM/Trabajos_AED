@@ -4,21 +4,27 @@ import Actividades.LinkedList;
 import Actividades.Node;
 
 public class ListUtils {
+    // Ejercicio 1: Buscar un elemento genérico en una lista
     public static <T extends Comparable<T>> boolean buscarElemento(LinkedList<T> lista, T elemento) {
         return lista.search(elemento) != -1;
     }
 
+    // Ejercicio 2: Invertir una lista generica
     public static <T extends Comparable<T>> LinkedList<T> invertirLista(LinkedList<T> listaOriginal) {
-        LinkedList<T> listaInvertida = new LinkedList<>();
-
-        Node<T> actual = listaOriginal.first;  // accedemos directo al head
+        Node<T> anterior = null;
+        Node<T> actual = listaOriginal.first;
+        Node<T> siguiente;
 
         while (actual != null) {
-            listaInvertida.insertFirst(actual.getData());  // insertamos al inicio
-            actual = actual.getNext();
+            siguiente = actual.getNext();      // Guardamos el siguiente nodo
+            actual.setNext(anterior);         // Invertimos el enlace
+            anterior = actual;                // Avanzamos 'anterior'
+            actual = siguiente;               // Avanzamos 'actual'
         }
 
-        return listaInvertida;
+        listaOriginal.first = anterior;       // El nuevo inicio es el último que recorrimos
+
+        return listaOriginal;
     }
 
     // Ejercicio 3: insertar al final
