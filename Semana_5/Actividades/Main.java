@@ -2,85 +2,89 @@ package Actividades;
 
 public class Main 
 {
-       public static void main(String[] args) {
-               // Crear instancias
-       GestorDeTareas<Tarea> tareasPendientes = new GestorDeTareas<>();
-       GestorDeTareas<Tarea> tareasCompletadas = new GestorDeTareas<>();
+    public static void main(String[] args) {
+        // 1. Crear una instancia de GestorDeTareas2<T> para tareas pendientes
+        GestorDeTareas2<Tarea> tareasPendientes = new GestorDeTareas2<>();
+        
+        // Crear una lista genérica adicional para tareas completadas
+        LinkedList<Tarea> tareasCompletadas = new LinkedList<>();
 
-       // 1. Agregar tareas
-       System.out.println("--- Agregando tareas pendientes ---");
-       tareasPendientes.agregarTarea(new Tarea("Estudiar Java", 3));
-       tareasPendientes.agregarTarea(new Tarea("Hacer ejercicio", 2));
-       tareasPendientes.agregarTarea(new Tarea("Comprar víveres", 4));
-       tareasPendientes.agregarTarea(new Tarea("Llamar al médico", 5));
-       tareasPendientes.agregarTarea(new Tarea("Revisar correo", 1));
-       tareasPendientes.agregarTarea(new Tarea("Entregar informe", 5));
+        // 2. Agregar tareas
+        System.out.println("--- Agregando tareas pendientes ---");
+        tareasPendientes.agregarTarea(new Tarea("Estudiar Java", 3));
+        tareasPendientes.agregarTarea(new Tarea("Hacer ejercicio", 2));
+        tareasPendientes.agregarTarea(new Tarea("Comprar víveres", 4));
+        tareasPendientes.agregarTarea(new Tarea("Llamar al médico", 5));
+        tareasPendientes.agregarTarea(new Tarea("Revisar correo", 1));
 
-       // 2. Completando tareas (ANTES de imprimir)
-       System.out.println("\n--- Completando una tarea ---");
-       Tarea tareaCompletada1 = new Tarea("Hacer ejercicio", 2);
-       if (tareasPendientes.eliminarTarea(tareaCompletada1)) {
-           tareasCompletadas.agregarTarea(tareaCompletada1);
-           System.out.println("Tarea completada: " + tareaCompletada1);
-       } else {
-           System.out.println("No se encontró la tarea: " + tareaCompletada1);
-       }
+        // 3. Eliminar una tarea
+        System.out.println("\n--- Eliminando una tarea ---");
+        Tarea tareaEliminar = new Tarea("Revisar correo", 1);
+        if (tareasPendientes.eliminarTarea(tareaEliminar)) {
+            System.out.println("Tarea eliminada: " + tareaEliminar);
+        } else {
+            System.out.println("No se encontró la tarea: " + tareaEliminar);
+        }
 
-       // 3. Imprimir tareas actuales
-       System.out.println("\n--- Tareas pendientes actuales ---");
-       tareasPendientes.imprimirTareas();
+        // 4. Imprimir todas las tareas actuales
+        System.out.println("\n--- Tareas pendientes actuales ---");
+        tareasPendientes.imprimirTareas();
 
-       // 4. Verificar existencia de tareas
-       System.out.println("\n--- Verificando existencia de tareas ---");
-       Tarea tareaBuscada = new Tarea("Estudiar Java", 3);
-       System.out.println("¿Existe 'Estudiar Java' en pendientes? " + tareasPendientes.contieneTarea(tareaBuscada));
-       System.out.println("¿Existe 'Hacer ejercicio' en pendientes? " + tareasPendientes.contieneTarea(tareaCompletada1));
+        // 5. Verificar si cierta tarea existe
+        System.out.println("\n--- Verificando existencia de tareas ---");
+        Tarea tareaBuscada = new Tarea("Estudiar Java", 3);
+        System.out.println("¿Existe 'Estudiar Java' en pendientes? " + 
+                          tareasPendientes.contieneTarea(tareaBuscada));
+        System.out.println("¿Existe 'Revisar correo' en pendientes? " + 
+                          tareasPendientes.contieneTarea(tareaEliminar));
 
-       // 5. Invertir lista
-       System.out.println("\n--- Invirtiendo la lista de tareas pendientes ---");
-       tareasPendientes.invertirTareas();
-       System.out.println("Tareas pendientes después de invertir:");
-       tareasPendientes.imprimirTareas();
+        // 6. Invertir la lista
+        System.out.println("\n--- Invirtiendo la lista de tareas pendientes ---");
+        tareasPendientes.invertirTareas();
+        System.out.println("Tareas pendientes después de invertir:");
+        tareasPendientes.imprimirTareas();
 
-       // 6. Completar otra tarea
-       System.out.println("\n--- Completando otra tarea ---");
-       Tarea tareaCompletada2 = new Tarea("Revisar correo", 1);
-       if (tareasPendientes.eliminarTarea(tareaCompletada2)) {
-           tareasCompletadas.agregarTarea(tareaCompletada2);
-           System.out.println("Tarea completada: " + tareaCompletada2);
-       } else {
-           System.out.println("No se encontró la tarea: " + tareaCompletada2);
-       }
+        // 7. Transferir una tarea a una lista de "tareas completadas"
+        System.out.println("\n--- Transfiriendo tarea a completadas ---");
+        Tarea tareaCompletar = new Tarea("Hacer ejercicio", 2);
+        if (tareasPendientes.contieneTarea(tareaCompletar)) {
+            if (tareasPendientes.eliminarTarea(tareaCompletar)) {
+                tareasCompletadas.insertLast(tareaCompletar);
+                System.out.println("Tarea transferida a completadas: " + tareaCompletar);
+            }
+        } else {
+            System.out.println("No se encontró la tarea para transferir: " + tareaCompletar);
+        }
 
-       // 7. Mostrar ambas listas
-       System.out.println("\n--- Lista de tareas pendientes ---");
-       tareasPendientes.imprimirTareas();
+        // Transferir otra tarea para tener más ejemplos
+        Tarea tareaCompletar2 = new Tarea("Estudiar Java", 3);
+        if (tareasPendientes.eliminarTarea(tareaCompletar2)) {
+            tareasCompletadas.insertLast(tareaCompletar2);
+            System.out.println("Tarea transferida a completadas: " + tareaCompletar2);
+        }
 
-       System.out.println("\n--- Lista de tareas completadas ---");
-       tareasCompletadas.imprimirTareas();
+        // 8. Mostrar ambas listas
+        System.out.println("\n--- Lista de tareas pendientes ---");
+        tareasPendientes.imprimirTareas();
 
-       // 8. Estadísticas finales
-       System.out.println("\n--- Estadísticas ---");
-       System.out.println("Número de tareas pendientes: " + tareasPendientes.contarTareas());
-       System.out.println("Número de tareas completadas: " + tareasCompletadas.contarTareas());
+        System.out.println("\n--- Lista de tareas completadas ---");
+        Node<Tarea> current = tareasCompletadas.first;
+        while (current != null) {
+            System.out.println(current.getData());
+            current = current.getNext();
+        }
 
-       // 9. Mostrar la tarea más prioritaria de las pendientes
-       Tarea tareaMasPrioritaria = tareasPendientes.obtenerTareaMasPrioritaria();
-       if (tareaMasPrioritaria != null) {
-           System.out.println("Tarea pendiente más prioritaria: " + tareaMasPrioritaria);
-       } else {
-           System.out.println("No hay tareas pendientes para mostrar prioridad.");
-       }
+        // Estadísticas finales
+        System.out.println("\n--- Estadísticas ---");
+        System.out.println("Número de tareas pendientes: " + tareasPendientes.contarTareas());
+        System.out.println("Número de tareas completadas: " + tareasCompletadas.length());
 
-
-           //Contar Nodos proporcionando un nodo cabeza
-           // Explicitly specify the type parameter <Tarea> for the static generic method call
-           System.out.println("Numero de Nodos: " + GestorDeTareas.<Tarea>ContarNodos(tareasPendientes.ObtenerPrimero()));
-           //Insertal al final de la lista una tarea
-           tareasPendientes.InsertarAlFinal(tareasPendientes.ObtenerPrimero(), new Tarea("Estudiar Listas Enlazadas", 4));
-           //Cuenta nuevamente los nodos depues de añadir una nueva tarea
-           // Explicitly specify the type parameter <Tarea> for the static generic method call
-           System.out.println("Numero de Nodos: " + GestorDeTareas.<Tarea>ContarNodos(tareasPendientes.ObtenerPrimero()));
-
-   }
+        // Mostrar la tarea más prioritaria de las pendientes
+        Tarea tareaMasPrioritaria = tareasPendientes.obtenerTareaMasPrioritaria();
+        if (tareaMasPrioritaria != null) {
+            System.out.println("Tarea pendiente más prioritaria: " + tareaMasPrioritaria);
+        } else {
+            System.out.println("No hay tareas pendientes para mostrar prioridad.");
+        }
+    }
 }
