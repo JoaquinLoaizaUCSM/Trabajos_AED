@@ -1,4 +1,6 @@
-package actividades;
+package actividad2;
+
+import actividad1.ExceptionIsEmpty;
 
 public class QueueLink<E> implements Queue<E> {
     private Node<E> first;

@@ -1,9 +1,10 @@
-package actividades;
+package actividad1;
 
-class StackArray<E> implements Stack<E> {
+public class StackArray<E> implements Stack<E> {
     private E[] array;
     private int tope;
 
+    @SuppressWarnings("unchecked")
     public StackArray(int n) {
         this.array = (E[]) new Object[n]; // casteo
         this.tope = -1;

@@ -1,5 +1,13 @@
 package actividades;
 
+import actividad1.ExceptionIsEmpty;
+import actividad1.StackArray;
+import actividad1.Stack;
+import actividad2.QueueLink;
+import actividad2.Queue;
+import actividad3.PriorityQueueLinkSort;
+import actividad3.PriorityQueue;
+
 public class Test {
     public static void main(String[] args) throws ExceptionIsEmpty {
         System.out.println("===== ACTIVIDAD 1: StackArray =====");

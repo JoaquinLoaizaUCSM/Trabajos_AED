@@ -1,4 +1,4 @@
-package actividades;
+package actividad1;
 
 public class ExceptionIsEmpty extends RuntimeException {
 

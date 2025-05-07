@@ -1,4 +1,4 @@
-package actividades;
+package actividad1;
 
 public interface Stack<E> {
     void push(E x);

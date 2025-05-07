@@ -1,4 +1,4 @@
-package actividades;
+package actividad2;
 
 public class Node<T> {
     public T data;

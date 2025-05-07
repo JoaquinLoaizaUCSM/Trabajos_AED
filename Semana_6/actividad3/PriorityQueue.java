@@ -1,4 +1,6 @@
-package actividades;
+package actividad3;
+
+import actividad1.ExceptionIsEmpty;
 
 public interface PriorityQueue<E, N> {
     void enqueue(E x, N pr);

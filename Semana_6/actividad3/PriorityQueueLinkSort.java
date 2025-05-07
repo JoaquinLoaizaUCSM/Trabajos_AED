@@ -1,4 +1,7 @@
-package actividades;
+package actividad3;
+
+import actividad1.ExceptionIsEmpty;
+import actividad2.Node;
 
 public class PriorityQueueLinkSort<E, N extends Comparable<N>> implements PriorityQueue<E, N> {
 
