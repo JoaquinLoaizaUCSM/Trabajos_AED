@@ -1,39 +1,13 @@
 package Ejercicio1;
 import actividad1.Stack;
+import actividad2.Node;
 
 public class StackLink<T> implements Stack<T> 
 {
-    private static class Node<T> 
-    {
-        private T data;
-        private Node<T> next;
-
-        public Node(T data) 
-        {
-            this.data = data;
-            this.next = null;
-        }
-
-        public T getData() 
-        {
-            return data;
-        }
-
-        public Node<T> getNext() 
-        {
-            return next;
-        }
-
-        public void setNext(Node<T> next) 
-        {
-            this.next = next;
-        }
-    }
-
     private Node<T> top;
 
     public StackLink()
-     {
+    {
         this.top = null;
     }
 
