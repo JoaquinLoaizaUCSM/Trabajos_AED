@@ -57,6 +57,16 @@ public class QueueLink<E> implements Queue<E> {
     }
 
     @Override
+    public boolean isFull() {
+    // En una cola basada en lista enlazada, este metodo no sirve
+    // ya que la cola puede crecer dinamicamente segun sea necesario
+    return false; // Siempre devuelve false porque la cola nunca esta llena
+    //Esta solo para cumplir con la interfaz
+    //Su verdadero uso esta en Ejercicio2/QueueArray.java 
+    }
+
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         Node<E> current = this.first;
