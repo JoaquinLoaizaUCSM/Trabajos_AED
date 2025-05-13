@@ -109,4 +109,35 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
             toStringRec(node.right, sb);
         }
     }
+
+    // ejercicio 7,8 y 9
+    private void inOrder(Node node) {
+        if (node != null) {
+            inOrder(node.left);
+            System.out.println("Visitar la raíz: " + node.data);
+            inOrder(node.right);
+        } else {
+            System.out.println("Vacío");
+        }
+    }
+
+    private void preOrder(Node node) {
+        if (node != null) {
+            System.out.println("Visitar la raíz: " + node.data);
+            preOrder(node.left);
+            preOrder(node.right);
+        } else {
+            System.out.println("Vacío");
+        }
+    }
+
+    private void postOrder(Node node) {
+        if (node != null) {
+            postOrder(node.left);
+            postOrder(node.right);
+            System.out.println("Visitar la raíz: " + node.data);
+        } else {
+            System.out.println("Vacío");
+        }
+    }
 }
