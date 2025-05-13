@@ -155,9 +155,7 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E>
         }
     }
 
-    // --------------------
-    // EJERCICIO 1 (EXTENSIONES)
-    // --------------------
+    // EJERCICIO 1 
 
     // a. Eliminar todos los nodos del arbol
     public void destroyNodes() throws ExceptionIsEmpty 
@@ -169,7 +167,7 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E>
         root = null;
     }
 
-    // b. Contar nodos NO hoja
+    // b. Contar nodos internos es decir nodos NO hoja
     public int countAllNodes() 
     {
         return countNonLeafNodes(root);
@@ -190,9 +188,9 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E>
     // d. Altura de un subarbol con raiz x (iterativo)
     public int height(E x) throws ExceptionIsEmpty 
     {
-        Node start = findNodeIteratively(root, x);
-        if (start == null) return -1;
-        return calculateHeightIteratively(start);
+        Node start = findNodeIteratively(root, x);  // Busca el nodo con valor x en el arbol de forma iterativa
+        if (start == null) return -1; // Si no encuentra el nodo, retorna -1
+        return calculateHeightIteratively(start); // Calcula la altura del subarbol a partir del nodo encontrado
     }
 
     private Node findNodeIteratively(Node node, E x) 
@@ -209,21 +207,21 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E>
 
     private int calculateHeightIteratively(Node node) throws ExceptionIsEmpty 
     {
-        if (node == null) return -1;
+        if (node == null) return -1; // Si el nodo es nulo, la altura es -1
 
-        QueueLink<Node> queue = new QueueLink<>();
-        queue.enqueue(node);
-        int height = -1;
+        QueueLink<Node> queue = new QueueLink<>(); // Crea una cola para recorrer el arbol por niveles
+        queue.enqueue(node); // Encola el nodo raiz, el primero
+        int height = -1;  // Empieza con una altura de -1
 
         while (!queue.isEmpty()) 
         {
-            int size = queue.size(); 
+            int size = queue.size();  // Obtiene el tamaño de la cola (numero de nodos en el nivel ACTUAL)
             height++;
             for (int i = 0; i < size; i++) 
             {
-                Node current = queue.dequeue();
-                if (current.left != null) queue.enqueue(current.left);
-                if (current.right != null) queue.enqueue(current.right);
+                Node current = queue.dequeue();  //Desencola el nodo actual
+                if (current.left != null) queue.enqueue(current.left); // Si tiene hijo izquierdo, lo agrega a la cola
+                if (current.right != null) queue.enqueue(current.right); // Si tiene hijo derecho, lo agrega a la cola
             }
         }
 
@@ -238,36 +236,36 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E>
 
     private int countNodesAtLevel(Node node, int targetLevel) 
     {
-        if (node == null || targetLevel < 0) return 0;
+        if (node == null || targetLevel < 0) return 0; // Si el nodo es nulo o el nivel es negativo, es pq no hay nodos
 
-        QueueLink<Node> queue = new QueueLink<>();
-        QueueLink<Integer> levels = new QueueLink<>();
-        queue.enqueue(node);
-        levels.enqueue(0);
+        QueueLink<Node> queue = new QueueLink<>(); //Cola para recorrer los niveles
+        QueueLink<Integer> levels = new QueueLink<>(); // Cola para llevar el nivel de cada nodo
+        queue.enqueue(node); // Encola el nodo raiz, el primero
+        levels.enqueue(0);  // Encola el nivel del nodo raíz (0)
         int count = 0;
 
         while (!queue.isEmpty()) 
         {
             try {
-                Node current = queue.dequeue();
-                int currentLevel = levels.dequeue();
+                Node current = queue.dequeue(); //Desencola el nodo actual
+                int currentLevel = levels.dequeue(); // Desencola el nivel del nodo actual
 
-                // Imprimir para depuración
+                // Imprimir para depuracion
                 System.out.println("Nodo: " + current.data + ", Nivel: " + currentLevel);
 
-                if (currentLevel == targetLevel) 
+                if (currentLevel == targetLevel) // Si el nivel actual es el que buscamos, incrementa el contador
                 {
                     count++;
                 }
 
-                if (current.left != null) {
-                    queue.enqueue(current.left);
-                    levels.enqueue(currentLevel + 1);
+                if (current.left != null) { // Si tiene hijo izquierdo, lo agrega a la cola
+                    queue.enqueue(current.left); 
+                    levels.enqueue(currentLevel + 1); // El hijo izquierdo esta UN NIVEL MAS PROFUNDO
                 }
 
-                if (current.right != null) {
-                    queue.enqueue(current.right);
-                    levels.enqueue(currentLevel + 1);
+                if (current.right != null) {// Si tiene hijo derecho, lo agrega a la cola
+                    queue.enqueue(current.right); 
+                    levels.enqueue(currentLevel + 1); // El hijo derecho tambien esta UN NIVEL MAS PROFUNDO
                 }
             } catch (ExceptionIsEmpty e) {
                 System.out.println("Error interno en la cola: " + e.getMessage());
