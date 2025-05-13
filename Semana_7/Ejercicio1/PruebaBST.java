@@ -1,6 +1,5 @@
-package Semana_7.Ejercicio1;
+package Ejercicio1;
 
-import Semana_7.Actividad4.Exceptions.*;
 
 public class PruebaBST {
     public static void main(String[] args) {

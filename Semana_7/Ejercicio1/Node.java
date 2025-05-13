@@ -1,4 +1,4 @@
-package Semana_7.Ejercicio1;
+package Ejercicio1;
 
 public class Node<T> {
     public T data;

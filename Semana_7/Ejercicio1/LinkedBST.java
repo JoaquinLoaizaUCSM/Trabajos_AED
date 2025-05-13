@@ -1,7 +1,6 @@
-package Semana_7.Ejercicio1;
+package Ejercicio1;
 
-import Semana_7.Actividad4.Exceptions.*;
-import Semana_7.Actividad5.BinarySearchTree;
+
 
 public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> 
 {
@@ -246,30 +245,25 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E>
 
         while (!queue.isEmpty()) 
         {
-            try {
-                Node current = queue.dequeue(); //Desencola el nodo actual
-                int currentLevel = levels.dequeue(); // Desencola el nivel del nodo actual
+            Node current = queue.dequeue(); //Desencola el nodo actual
+            int currentLevel = levels.dequeue(); // Desencola el nivel del nodo actual
 
-                // Imprimir para depuracion
-                System.out.println("Nodo: " + current.data + ", Nivel: " + currentLevel);
+            // Imprimir para depuracion
+            System.out.println("Nodo: " + current.data + ", Nivel: " + currentLevel);
 
-                if (currentLevel == targetLevel) // Si el nivel actual es el que buscamos, incrementa el contador
-                {
-                    count++;
-                }
+            if (currentLevel == targetLevel) // Si el nivel actual es el que buscamos, incrementa el contador
+            {
+                count++;
+            }
 
-                if (current.left != null) { // Si tiene hijo izquierdo, lo agrega a la cola
-                    queue.enqueue(current.left); 
-                    levels.enqueue(currentLevel + 1); // El hijo izquierdo esta UN NIVEL MAS PROFUNDO
-                }
+            if (current.left != null) { // Si tiene hijo izquierdo, lo agrega a la cola
+                queue.enqueue(current.left); 
+                levels.enqueue(currentLevel + 1); // El hijo izquierdo esta UN NIVEL MAS PROFUNDO
+            }
 
-                if (current.right != null) {// Si tiene hijo derecho, lo agrega a la cola
-                    queue.enqueue(current.right); 
-                    levels.enqueue(currentLevel + 1); // El hijo derecho tambien esta UN NIVEL MAS PROFUNDO
-                }
-            } catch (ExceptionIsEmpty e) {
-                System.out.println("Error interno en la cola: " + e.getMessage());
-                break;
+            if (current.right != null) {// Si tiene hijo derecho, lo agrega a la cola
+                queue.enqueue(current.right); 
+                levels.enqueue(currentLevel + 1); // El hijo derecho tambien esta UN NIVEL MAS PROFUNDO
             }
         }
 

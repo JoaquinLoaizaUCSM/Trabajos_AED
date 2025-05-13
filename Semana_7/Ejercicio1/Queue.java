@@ -1,6 +1,6 @@
-package Semana_7.Ejercicio1;
+package Ejercicio1;
 
-import Semana_7.Actividad4.Exceptions.*;
+import actividad1.ExceptionIsEmpty;
 
 public interface Queue<E> {
     void enqueue(E x);

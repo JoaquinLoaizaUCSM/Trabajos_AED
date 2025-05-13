@@ -1,6 +1,6 @@
-package Semana_7.Ejercicio1;
-import Semana_7.Actividad4.Exceptions.*;
+package Ejercicio1;
 
+import actividad1.ExceptionIsEmpty;
 
 public class QueueLink<E> implements Queue<E> 
 {
