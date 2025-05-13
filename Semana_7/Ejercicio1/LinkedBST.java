@@ -170,7 +170,6 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E>
     }
 
     // b. Contar nodos NO hoja
-    // Método para contar los nodos no-hojas
     public int countAllNodes() 
     {
         return countNonLeafNodes(root);
@@ -218,7 +217,7 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E>
 
         while (!queue.isEmpty()) 
         {
-            int size = queue.size(); // Asegurate de tener este metodo implementado en QueueLink
+            int size = queue.size(); 
             height++;
             for (int i = 0; i < size; i++) 
             {
