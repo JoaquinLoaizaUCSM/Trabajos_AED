@@ -13,18 +13,10 @@ public class Test3 {
         arbol.insert(25);
         arbol.insert(6);
         arbol.insert(9);
-        arbol.insert(11);
-        arbol.insert(13);
-        arbol.insert(16);
-        arbol.insert(18);
-        arbol.insert(22);
-        arbol.insert(27);
-        arbol.insert(5);
-        arbol.insert(7);
         
         System.out.println("\nPruebas en el árbol drawBST:");
 
-        System.out.println(arbol);
+        arbol.drawBST();
         
         
         
@@ -64,6 +56,8 @@ public class Test3 {
         // Imprimir representación del árbol t
         System.out.println("Árbol t:");
         t.parenthesize();
+
+        t.drawBST();
     }
 
     public static boolean sameArea(LinkedBST<?> arb1, LinkedBST<?> arb2) throws ExceptionIsEmpty {

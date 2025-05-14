@@ -278,35 +278,89 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
     }
 
     
-    @Override
-    public String toString() {
+    /** Imprime el árbol con la raíz arriba y las hojas al fondo,
+     *  usando una representación ASCII parecida a los diagramas clásicos. */
+    public void drawBST() {
         if (root == null) {
-            return "<Árbol vacío>\n";
-        }
-        StringBuilder sb = new StringBuilder();
-        drawRecString(root, "", true, sb);
-        return sb.toString();
+            System.out.println("<Árbol vacío>");
+            return;
     }
 
-    // Auxiliar: construye en sb la vista ASCII del árbol
-    private void drawRecString(Node node, String prefix, boolean isTail, StringBuilder sb) {
-        if (node.right != null) {
-            drawRecString(node.right,
-                          prefix + (isTail ? "│   " : "    "),
-                          false,
-                          sb);
+    // 1. altura del árbol
+    int h = 0;
+    try { 
+        h = calculateHeightIteratively(root); 
+    }          
+    catch (ExceptionIsEmpty e) { /* nunca llega aquí */ }
+
+    // 2. ancho total: 2^(h+1) − 1 “posiciones” (nodos + huecos)
+    int maxWidth = (1 << (h + 1)) - 1;
+
+    // 3. recorrido nivel‑por‑nivel
+    QueueLink<Node> q  = new QueueLink<>();
+    QueueLink<Integer> lvl = new QueueLink<>();
+    q.enqueue(root);
+    lvl.enqueue(0);
+
+    int currLevel = 0;
+    /* ancho actual entre nodos = maxWidth; se reducirá a la mitad en cada piso */
+    int between = maxWidth;                              
+
+    // Buffers para imprimir las dos líneas de cada nivel
+    StringBuilder nodesLine = new StringBuilder();
+    StringBuilder armsLine  = new StringBuilder();
+
+    while (!q.isEmpty()) {
+        Node n = q.dequeue();
+        int  l = lvl.dequeue();
+
+        if (l != currLevel) {              // ─ cambio de nivel ─
+            System.out.println(nodesLine); // 1ª línea con nodos
+            System.out.println(armsLine);  // 2ª línea con aristas
+            nodesLine.setLength(0);
+            armsLine.setLength(0);
+            currLevel = l;
+            between  >>= 1;                // la separación se parte a la mitad
         }
-        sb.append(prefix)
-          .append(isTail ? "└── " : "┌── ")
-          .append(node.data)
-          .append("\n");
-        if (node.left != null) {
-            drawRecString(node.left,
-                          prefix + (isTail ? "    " : "│   "),
-                          true,
-                          sb);
+
+        // nodos: imprimimos “between/2” espacios antes, el valor, y “between/2” espacios después
+        int pad = between >> 1;
+        appendSpaces(nodesLine, pad);
+        nodesLine.append(n == null ? " " : n.data.toString());
+        appendSpaces(nodesLine, pad);
+
+        // aristas para el siguiente nivel
+        if (between > 1) {                 // sólo si todavía hay espacio para dibujarlas
+            appendSpaces(armsLine, pad);
+            if (n != null && n.left != null)  armsLine.append('/');
+            else                              armsLine.append(' ');
+            appendSpaces(armsLine, between - pad - 1);
+            if (n != null && n.right != null) armsLine.append('\\');
+            else                              armsLine.append(' ');
+            appendSpaces(armsLine, pad);
         }
+
+        /* Encolar hijos para el siguiente nivel (o nulos para mantener el ancho) */
+        if (n == null) {
+            q.enqueue(null); q.enqueue(null);
+        } else {
+            q.enqueue(n.left);  q.enqueue(n.right);
+        }
+        lvl.enqueue(l + 1);  lvl.enqueue(l + 1);
+
+        /* Cuando llegamos al último posible nivel ya no hace falta seguir */
+        if (l + 1 > h) break;
     }
+        // Imprime el último nivel acumulado
+        System.out.println(nodesLine);
+        }
+
+    /* ---------- Pequeña ayuda ---------- */
+    private void appendSpaces(StringBuilder sb, int n) {
+        for (int i = 0; i < n; i++) sb.append(' ');
+    }
+
+
 
     // Ejercicio 3
 
