@@ -8,9 +8,16 @@ import Semana_9.list.QueueLink;
 public class GraphLink<E>{
 
     protected ListLinked<Vertex<E>> listVertex;
+    boolean directed;
 
     public GraphLink(){
         this.listVertex = new ListLinked<Vertex<E>>();
+        this.directed = false; // Por defecto, el grafo es no dirigido
+    }
+
+    public GraphLink(boolean directed){
+        this.listVertex = new ListLinked<Vertex<E>>();
+        this.directed = directed; // El grafo puede ser dirigido o no dirigido
     }
 
     public void addVertex(E data){
@@ -22,7 +29,7 @@ public class GraphLink<E>{
         listVertex.add(newVertex);
     }
 
-    public void addEdge(E data1, E data2, int weight){
+    public void addEdge(E data1, E data2, int weight) {
 
         Vertex<E> v1 = findVertexData(data1);
         Vertex<E> v2 = findVertexData(data2);
@@ -34,6 +41,13 @@ public class GraphLink<E>{
                 
         Edges<E> edge = new Edges<>(v2, weight);
         v1.listAdj.add(edge);
+
+        if (!directed) {
+            Edges<E> reverseEdge = new Edges<>(v1, weight);
+            v2.listAdj.add(reverseEdge);
+        }
+
+        System.out.println("Arista agregada exitosamente: " + data1 + " -> " + data2 + " con peso " + weight);
 
     }
 
@@ -91,6 +105,10 @@ public class GraphLink<E>{
     }
 
     public void removeEdge(E data1, E data2) {
+        if (data1 == null || data2 == null) {
+            System.out.println("Los datos de los nodos no pueden ser nulos");
+            return;
+        }
         Vertex<E> v1 = findVertexData(data1);
         Vertex<E> v2 = findVertexData(data2);
         
@@ -117,6 +135,11 @@ public class GraphLink<E>{
                     previous.setNext(current.getNext());
                 }
                 System.out.println("Arista eliminada exitosamente");
+                
+                if (!directed) {
+                    // Si es no dirigido, eliminar la arista en el otro sentido
+                    removeEdge(data2, data1);
+                }
                 return;
             }
             previous = current;
