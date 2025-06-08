@@ -188,7 +188,7 @@ public class GraphLink<E>{
                 }
             } catch (ExceptionIsEmpty e) {
                 // Esta excepción no debería ocurrir ya que verificamos !queue.isEmpty()
-                System.err.println("Error inesperado: " + e.getMessage());
+                System.err.println("Error : " + e.getMessage());
                 break;
             }
         }
