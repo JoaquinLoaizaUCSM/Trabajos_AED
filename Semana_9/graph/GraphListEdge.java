@@ -11,6 +11,14 @@ public class GraphListEdge<V, E> {
     private ListLinked<VertexObj<V, E>> secVertex;
     private ListLinked<EdgeObj<V, E>> secEdge;
 
+    public ListLinked<EdgeObj<V, E>> getSecEdge() {
+        return secEdge;
+    }
+
+    public ListLinked<VertexObj<V, E>> getSecVertex() {
+        return secVertex;
+    }
+
     public GraphListEdge() {
         secVertex = new ListLinked<>();
         secEdge = new ListLinked<>();
@@ -115,6 +123,11 @@ public class GraphListEdge<V, E> {
             current = current.getNext();
         }
         return null;
+    }
+
+    public ListLinked<VertexObj<V, E>> bfsList(V start) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'bfsList'");
     }
 
 

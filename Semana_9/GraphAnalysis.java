@@ -1,4 +1,4 @@
-package Semana_9.graph;
+package Semana_9;
 
 import Semana_9.list.ListLinked;
 import Semana_9.list.Node;

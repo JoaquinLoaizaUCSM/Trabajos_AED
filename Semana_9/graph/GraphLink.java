@@ -149,51 +149,6 @@ public class GraphLink<E>{
         System.out.println("No se encontró la arista a eliminar");
     }
 
-    public void BSF(E v) {
-        if (isEmptyGraph()) {
-            System.out.println("El grafo esta vacio");
-            return;
-        }
-
-        if (v == null) {
-            System.out.println("El vertice no puede ser nulo");
-            return;
-        }
-
-
-        if (findVertexData(v) == null) {
-            System.out.println("El vertice no existe");
-            return;
-        }
-        ListLinked<Vertex<E>> visited = new ListLinked<>();
-        QueueLink<Vertex<E>> queue = new QueueLink<>();
-
-        Vertex<E> startVertex = findVertexData(v);
-        visited.add(startVertex);
-        queue.enqueue(startVertex);
-
-        while (!queue.isEmpty()) {
-            try {
-                Vertex<E> current = queue.dequeue();
-                System.out.print(current.getData() + " ");
-
-                Node<Edges<E>> adjNode = current.listAdj.getHead();
-                while (adjNode != null) {
-                    Vertex<E> adjVertex = adjNode.getData().getResDet();
-                    if (!isVisited(visited, adjVertex)) {
-                        visited.add(adjVertex);
-                        queue.enqueue(adjVertex);
-                    }
-                    adjNode = adjNode.getNext();
-                }
-            } catch (ExceptionIsEmpty e) {
-                // Esta excepción no debería ocurrir ya que verificamos !queue.isEmpty()
-                System.err.println("Error : " + e.getMessage());
-                break;
-            }
-        }
-    }
-
     private boolean isVisited(ListLinked<Vertex<E>> visited, Vertex<E> vertex) {
         Node<Vertex<E>> current = visited.getHead();
         while (current != null) {
@@ -204,7 +159,6 @@ public class GraphLink<E>{
         }
         return false;
     }
-
 
     public void destroyGraph() {
         listVertex.destroyList();
@@ -222,6 +176,605 @@ public class GraphLink<E>{
 
     public boolean isEmptyGraph() {
         return listVertex.getHead() == null;
+    }
+
+
+    public void BSF(E v) {
+    if (isEmptyGraph()) {
+        System.out.println("El grafo esta vacio");
+        return;
+    }
+
+    if (v == null) {
+        System.out.println("El vertice no puede ser nulo");
+        return;
+    }
+
+
+    if (findVertexData(v) == null) {
+        System.out.println("El vertice no existe");
+        return;
+    }
+    ListLinked<Vertex<E>> visited = new ListLinked<>();
+    QueueLink<Vertex<E>> queue = new QueueLink<>();
+
+    Vertex<E> startVertex = findVertexData(v);
+    visited.add(startVertex);
+    queue.enqueue(startVertex);
+
+    System.out.print("Recorrido BFS desde " + v + ": ");
+
+    while (!queue.isEmpty()) {
+        try {
+            Vertex<E> current = queue.dequeue();
+            System.out.print(current.getData() + " ");
+
+            Node<Edges<E>> adjNode = current.listAdj.getHead();
+            while (adjNode != null) {
+                Vertex<E> adjVertex = adjNode.getData().getResDet();
+                if (!isVisited(visited, adjVertex)) {
+                    visited.add(adjVertex);
+                    queue.enqueue(adjVertex);
+                }
+                adjNode = adjNode.getNext();
+            }
+        } catch (ExceptionIsEmpty e) {
+            System.err.println("Error: " + e.getMessage());
+            break;
+        }
+    }
+    
+    System.out.println(); // Nueva línea al final
+}
+
+    // ==================== EJERCICIO 1 - SIN ARRAYLIST INTERNO ====================
+    
+    /**
+     * Encuentra el camino más corto entre dos vértices usando BFS
+     * @param v Vértice de origen
+     * @param z Vértice de destino
+     * @return ArrayListLink con el camino desde v hasta z, null si no existe camino
+     */
+    public ArrayListLink<E> bfsPath(E v, E z) {
+        if (isEmptyGraph()) {
+            System.out.println("El grafo está vacío");
+            return null;
+        }
+
+        if (v == null || z == null) {
+            System.out.println("Los vértices no pueden ser nulos");
+            return null;
+        }
+
+        Vertex<E> startVertex = findVertexData(v);
+        Vertex<E> endVertex = findVertexData(z);
+
+        if (startVertex == null || endVertex == null) {
+            System.out.println("Uno o ambos vértices no existen en el grafo");
+            return null;
+        }
+
+        // Si el vértice origen y destino son el mismo
+        if (v.equals(z)) {
+            ArrayListLink<E> path = new ArrayListLink<>();
+            path.add(v);
+            return path;
+        }
+
+        // Estructuras para BFS - solo listas enlazadas propias
+        ListLinked<Vertex<E>> visited = new ListLinked<>();
+        QueueLink<Vertex<E>> queue = new QueueLink<>();
+        
+        // Listas enlazadas para mantener la relación padre-hijo
+        ListLinked<Vertex<E>> vertices = new ListLinked<>();
+        ListLinked<Vertex<E>> padres = new ListLinked<>();
+
+        // Inicializar BFS
+        visited.add(startVertex);
+        queue.enqueue(startVertex);
+        vertices.add(startVertex);
+        padres.add(null);  // El vértice inicial no tiene padre
+
+        boolean found = false;
+
+        while (!queue.isEmpty() && !found) {
+            try {
+                Vertex<E> current = queue.dequeue();
+
+                Node<Edges<E>> adjNode = current.listAdj.getHead();
+                while (adjNode != null && !found) {
+                    Vertex<E> adjVertex = adjNode.getData().getResDet();
+                    
+                    if (!isVisited(visited, adjVertex)) {
+                        visited.add(adjVertex);
+                        queue.enqueue(adjVertex);
+                        
+                        // Agregar relación padre-hijo usando listas enlazadas
+                        vertices.add(adjVertex);
+                        padres.add(current);
+
+                        // Si encontramos el vértice destino
+                        if (adjVertex.equals(endVertex)) {
+                            found = true;
+                        }
+                    }
+                    adjNode = adjNode.getNext();
+                }
+            } catch (ExceptionIsEmpty e) {
+                System.err.println("Error en BFS: " + e.getMessage());
+                break;
+            }
+        }
+
+        // Si no se encontró el camino
+        if (!found) {
+            System.out.println("No existe camino entre " + startVertex.getData() + " y " + endVertex.getData());
+            return null;
+        }
+
+        // Reconstruir el camino usando solo las listas enlazadas
+        return reconstruirCamino(startVertex, endVertex, vertices, padres);
+    }
+
+    /**
+     * Reconstruye el camino desde el destino hasta el origen
+     * usando solo las estructuras ListLinked del proyecto
+     */
+    private ArrayListLink<E> reconstruirCamino(Vertex<E> start, Vertex<E> end, 
+                                                   ListLinked<Vertex<E>> vertices, 
+                                                   ListLinked<Vertex<E>> padres) {
+        
+        // Lista temporal para construir el camino (de destino a origen)
+        ListLinked<E> caminoTemporal = new ListLinked<>();
+        
+        Vertex<E> current = end;
+        
+        // Recorrer desde el destino hasta el origen
+        while (current != null) {
+            caminoTemporal.add(current.getData());
+            current = buscarPadre(current, vertices, padres);
+        }
+        
+        // Convertir a ArrayListLink invirtiendo el orden (de origen a destino)
+        ArrayListLink<E> resultado = new ArrayListLink<>();
+        
+        // Contar elementos en la lista temporal
+        int tamaño = contarElementos(caminoTemporal);
+        
+        // Crear array temporal para facilitar la inversión
+        Object[] temp = new Object[tamaño];
+        
+        Node<E> node = caminoTemporal.getHead();
+        for (int i = 0; i < tamaño && node != null; i++) {
+            temp[i] = node.getData();
+            node = node.getNext();
+        }
+        
+        // Agregar al ArrayListLink en orden inverso
+        for (int i = tamaño - 1; i >= 0; i--) {
+            resultado.add((E) temp[i]);
+        }
+        
+        return resultado;
+    }
+
+    /**
+     * Busca el padre de un vértice en las listas enlazadas
+     */
+    private Vertex<E> buscarPadre(Vertex<E> vertex, ListLinked<Vertex<E>> vertices, ListLinked<Vertex<E>> padres) {
+        Node<Vertex<E>> nodeVertices = vertices.getHead();
+        Node<Vertex<E>> nodePadres = padres.getHead();
+        
+        // Recorrer ambas listas en paralelo
+        while (nodeVertices != null && nodePadres != null) {
+            if (nodeVertices.getData().equals(vertex)) {
+                return nodePadres.getData(); // Puede ser null para el vértice inicial
+            }
+            nodeVertices = nodeVertices.getNext();
+            nodePadres = nodePadres.getNext();
+        }
+        
+        return null; // No se encontró
+    }
+
+    /**
+     * Cuenta los elementos en una ListLinked
+     */
+    private int contarElementos(ListLinked<E> lista) {
+        int count = 0;
+        Node<E> current = lista.getHead();
+        while (current != null) {
+            count++;
+            current = current.getNext();
+        }
+        return count;
+    }
+
+    /**
+     * Método auxiliar para mostrar un camino de forma legible
+     * @param path El camino a mostrar
+     */
+    public void mostrarCamino(ArrayListLink<E> path) {
+        if (path == null || path.isEmpty()) {
+            System.out.println("No hay camino que mostrar");
+            return;
+        }
+
+        System.out.print("Camino: ");
+        for (int i = 0; i < path.size(); i++) {
+            System.out.print(path.get(i));
+            if (i < path.size() - 1) {
+                System.out.print(" -> ");
+            }
+        }
+        System.out.println();
+        System.out.println("Longitud del camino: " + (path.size() - 1) + " aristas");
+    }
+    
+    // ==================== EJERCICIO 2  ====================
+
+    /**
+     * Inserta una arista del vértice v a z con peso w
+     * @param v Vértice origen
+     * @param z Vértice destino
+     * @param w Peso de la arista
+     */
+    public void insertEdgeWeight(E v, E z, int w) {
+        if (v == null || z == null) {
+            System.out.println("Los vértices no pueden ser nulos");
+            return;
+        }
+
+        Vertex<E> vertex1 = findVertexData(v);
+        Vertex<E> vertex2 = findVertexData(z);
+
+        if (vertex1 == null || vertex2 == null) {
+            System.out.println("Uno o ambos vértices no existen en el grafo");
+            return;
+        }
+
+        // Verificar si la arista ya existe
+        Node<Edges<E>> current = vertex1.listAdj.getHead();
+        while (current != null) {
+            if (current.getData().getResDet().equals(vertex2)) {
+                System.out.println("La arista ya existe, actualizando peso");
+                current.getData().setWeight(w);
+                
+                // Si es no dirigido, actualizar también la arista inversa
+                if (!directed) {
+                    Node<Edges<E>> currentRev = vertex2.listAdj.getHead();
+                    while (currentRev != null) {
+                        if (currentRev.getData().getResDet().equals(vertex1)) {
+                            currentRev.getData().setWeight(w);
+                            break;
+                        }
+                        currentRev = currentRev.getNext();
+                    }
+                }
+                return;
+            }
+            current = current.getNext();
+        }
+
+        // Crear nueva arista
+        Edges<E> edge = new Edges<>(vertex2, w);
+        vertex1.listAdj.add(edge);
+
+        // Si es no dirigido, agregar arista inversa
+        if (!directed) {
+            Edges<E> reverseEdge = new Edges<>(vertex1, w);
+            vertex2.listAdj.add(reverseEdge);
+        }
+
+        System.out.println("Arista agregada: " + v + " -> " + z + " con peso " + w);
+    }
+
+    /**
+     * Calcula la ruta más corta entre dos vértices usando el algoritmo de Dijkstra
+     * @param v Vértice origen
+     * @param z Vértice destino
+     * @return ArrayListLink con la ruta más corta, null si no existe
+     */
+    public ArrayListLink<E> shortPath(E v, E z) {
+        if (isEmptyGraph()) {
+            System.out.println("El grafo está vacío");
+            return null;
+        }
+
+        if (v == null || z == null) {
+            System.out.println("Los vértices no pueden ser nulos");
+            return null;
+        }
+
+        Vertex<E> startVertex = findVertexData(v);
+        Vertex<E> endVertex = findVertexData(z);
+
+        if (startVertex == null || endVertex == null) {
+            System.out.println("Uno o ambos vértices no existen en el grafo");
+            return null;
+        }
+
+        if (v.equals(z)) {
+            ArrayListLink<E> path = new ArrayListLink<>();
+            path.add(v);
+            return path;
+        }
+
+        // Estructuras para Dijkstra - usando solo listas enlazadas paralelas
+        ListLinked<Vertex<E>> verticesDistancia = new ListLinked<>();
+        ListLinked<Integer> distancias = new ListLinked<>();
+        ListLinked<Vertex<E>> verticesPredecesores = new ListLinked<>();
+        ListLinked<Vertex<E>> predecesores = new ListLinked<>();
+        PriorityQueueLink<VertexDistance<E>> cola = new PriorityQueueLink<>();
+        ListLinked<Vertex<E>> visitados = new ListLinked<>();
+
+        // Inicializar distancias usando listas paralelas
+        Node<Vertex<E>> current = listVertex.getHead();
+        while (current != null) {
+            Vertex<E> vertex = current.getData();
+            verticesDistancia.add(vertex);
+            verticesPredecesores.add(vertex);
+            
+            if (vertex.equals(startVertex)) {
+                distancias.add(0);
+                cola.offer(new VertexDistance<>(vertex, 0));
+            } else {
+                distancias.add(Integer.MAX_VALUE);
+            }
+            predecesores.add(null);
+            current = current.getNext();
+        }
+
+        while (!cola.isEmpty()) {
+            VertexDistance<E> actual = cola.poll();
+            Vertex<E> u = actual.getVertex();
+
+            if (isVisited(visitados, u)) {
+                continue;
+            }
+
+            visitados.add(u);
+
+            if (u.equals(endVertex)) {
+                break;
+            }
+
+            // Examinar vecinos
+            Node<Edges<E>> adjNode = u.listAdj.getHead();
+            while (adjNode != null) {
+                Vertex<E> vecino = adjNode.getData().getResDet();
+                int peso = adjNode.getData().getWeight();
+                
+                if (!isVisited(visitados, vecino)) {
+                    int distanciaActual = getDistancia(u, verticesDistancia, distancias);
+                    int nuevaDistancia = distanciaActual + peso;
+                    int distanciaVecino = getDistancia(vecino, verticesDistancia, distancias);
+                    
+                    if (nuevaDistancia < distanciaVecino) {
+                        setDistancia(vecino, nuevaDistancia, verticesDistancia, distancias);
+                        setPredecesor(vecino, u, verticesPredecesores, predecesores);
+                        cola.offer(new VertexDistance<>(vecino, nuevaDistancia));
+                    }
+                }
+                adjNode = adjNode.getNext();
+            }
+        }
+
+        // Verificar si se encontró un camino
+        if (getDistancia(endVertex, verticesDistancia, distancias) == Integer.MAX_VALUE) {
+            System.out.println("No existe camino entre " + v + " y " + z);
+            return null;
+        }
+
+        // Reconstruir el camino
+        ArrayListLink<E> path = new ArrayListLink<>();
+        Vertex<E> currentVertex = endVertex;
+
+        // Crear una lista temporal para construir el camino en orden inverso
+        StackLink<E> tempStack = new StackLink<>();
+        while (currentVertex != null) {
+            tempStack.push(currentVertex.getData());
+            currentVertex = getPredecesor(currentVertex, verticesPredecesores, predecesores);
+        }
+
+        // Pasar del stack al ArrayListLink para tener el orden correcto
+        while (!tempStack.isEmpty()) {
+            path.add(tempStack.pop());
+        }
+
+        return path;
+    }
+
+    /**
+     * Verifica si el grafo es conexo
+     * @return true si el grafo es conexo, false en caso contrario
+     */
+    public boolean isConexo() {
+        if (isEmptyGraph()) {
+            return true; // Un grafo vacío se considera conexo
+        }
+
+        int totalVertices = listVertex.size();
+        if (totalVertices == 1) {
+            return true; // Un grafo con un solo vértice es conexo
+        }
+
+        // Realizar BFS desde el primer vértice
+        Vertex<E> startVertex = listVertex.getHead().getData();
+        ListLinked<Vertex<E>> visited = new ListLinked<>();
+        QueueLink<Vertex<E>> queue = new QueueLink<>();
+
+        visited.add(startVertex);
+        queue.enqueue(startVertex);
+
+        while (!queue.isEmpty()) {
+            try {
+                Vertex<E> current = queue.dequeue();
+
+                Node<Edges<E>> adjNode = current.listAdj.getHead();
+                while (adjNode != null) {
+                    Vertex<E> adjVertex = adjNode.getData().getResDet();
+                    if (!isVisited(visited, adjVertex)) {
+                        visited.add(adjVertex);
+                        queue.enqueue(adjVertex);
+                    }
+                    adjNode = adjNode.getNext();
+                }
+            } catch (ExceptionIsEmpty e) {
+                System.err.println("Error en BFS: " + e.getMessage());
+                break;
+            }
+        }
+
+        // El grafo es conexo si visitamos todos los vértices
+        return visited.size() == totalVertices;
+    }
+
+    /**
+     * Implementación del algoritmo de Dijkstra que retorna un Stack con la ruta más corta
+     * @param v Vértice origen
+     * @param w Vértice destino
+     * @return Stack con la ruta más corta desde v hasta w
+     */
+    public StackLink<E> dijkstra(E v, E w) {
+        StackLink<E> result = new StackLink<>();
+
+        if (isEmptyGraph()) {
+            System.out.println("El grafo está vacío");
+            return result;
+        }
+
+        if (v == null || w == null) {
+            System.out.println("Los vértices no pueden ser nulos");
+            return result;
+        }
+
+        Vertex<E> startVertex = findVertexData(v);
+        Vertex<E> endVertex = findVertexData(w);
+
+        if (startVertex == null || endVertex == null) {
+            System.out.println("Uno o ambos vértices no existen en el grafo");
+            return result;
+        }
+
+        if (v.equals(w)) {
+            result.push(v);
+            return result;
+        }
+
+        // Usar el método shortPath para obtener el camino
+        ArrayListLink<E> path = shortPath(v, w);
+        
+        if (path == null || path.isEmpty()) {
+            System.out.println("No existe camino entre " + v + " y " + w);
+            return result;
+        }
+
+        // Convertir ArrayListLink a Stack (el último elemento del path será el top del stack)
+        for (int i = path.size() - 1; i >= 0; i--) {
+            result.push(path.get(i));
+        }
+
+        return result;
+    }
+
+    /**
+     * Método auxiliar para mostrar un camino con su distancia total
+     * @param path El camino a mostrar
+     * @param origen Vértice origen
+     * @param destino Vértice destino
+     */
+    public void mostrarCaminoConDistancia(ArrayListLink<E> path, E origen, E destino) {
+        if (path == null || path.isEmpty()) {
+            System.out.println("No hay camino que mostrar");
+            return;
+        }
+
+        System.out.print("Camino más corto de " + origen + " a " + destino + ": ");
+        for (int i = 0; i < path.size(); i++) {
+            System.out.print(path.get(i));
+            if (i < path.size() - 1) {
+                System.out.print(" -> ");
+            }
+        }
+
+        // Calcular distancia total
+        int distanciaTotal = 0;
+        for (int i = 0; i < path.size() - 1; i++) {
+            E actual = path.get(i);
+            E siguiente = path.get(i + 1);
+            
+            Vertex<E> vertexActual = findVertexData(actual);
+            Node<Edges<E>> adjNode = vertexActual.listAdj.getHead();
+            
+            while (adjNode != null) {
+                if (adjNode.getData().getResDet().getData().equals(siguiente)) {
+                    distanciaTotal += adjNode.getData().getWeight();
+                    break;
+                }
+                adjNode = adjNode.getNext();
+            }
+        }
+
+        System.out.println();
+        System.out.println("Distancia total: " + distanciaTotal);
+        System.out.println("Número de aristas: " + (path.size() - 1));
+    }
+
+    /**
+     * Método auxiliar para mostrar el contenido de un Stack
+     * @param stack2 El stack a mostrar
+     * @param mensaje Mensaje descriptivo
+     */
+    public void mostrarStack(StackLink<String> stack2, String mensaje) {
+        if (stack2.isEmpty()) {
+            System.out.println(mensaje + ": Stack vacío");
+            return;
+        }
+
+        System.out.print(mensaje + ": ");
+        StackLink<E> temp = new StackLink<>();
+        
+        // Mostrar el stack (el top es el primer elemento del camino)
+        while (!stack2.isEmpty()) {
+            E elemento = (E) stack2.pop();
+            temp.push(elemento);
+            System.out.print(elemento);
+            if (!stack2.isEmpty()) {
+                System.out.print(" -> ");
+            }
+        }
+        
+        // Restaurar el stack original
+        while (!temp.isEmpty()) {
+            stack2.push((String) temp.pop());
+        }
+        
+        System.out.println();
+    }
+
+    // ==================== CLASE AUXILIAR PARA DIJKSTRA ====================
+
+    /**
+     * Clase auxiliar para manejar vértices con distancias en la cola de prioridad
+     */
+    private static class VertexDistance<E> implements Comparable<VertexDistance<E>> {
+        private Vertex<E> vertex;
+        private int distance;
+
+        public VertexDistance(Vertex<E> vertex, int distance) {
+            this.vertex = vertex;
+            this.distance = distance;
+        }
+
+        public Vertex<E> getVertex() {
+            return vertex;
+        }
+
+        @Override
+        public int compareTo(VertexDistance<E> other) {
+            return Integer.compare(this.distance, other.distance);
+        }
     }
 
     // ==================== EJERCICIO 5  ====================
@@ -605,6 +1158,76 @@ public class GraphLink<E>{
         identificarTipoGrafo();
     }
 
+    // ==================== MÉTODOS AUXILIARES PARA LISTAS PARALELAS ====================
+    
+    /**
+     * Busca la distancia de un vértice en las listas paralelas
+     */
+    private Integer getDistancia(Vertex<E> vertex, ListLinked<Vertex<E>> vertices, ListLinked<Integer> distancias) {
+        Node<Vertex<E>> vNode = vertices.getHead();
+        Node<Integer> dNode = distancias.getHead();
+        
+        while (vNode != null && dNode != null) {
+            if (vNode.getData().equals(vertex)) {
+                return dNode.getData();
+            }
+            vNode = vNode.getNext();
+            dNode = dNode.getNext();
+        }
+        return Integer.MAX_VALUE; // No encontrado
+    }
+    
+    /**
+     * Actualiza la distancia de un vértice en las listas paralelas
+     */
+    private void setDistancia(Vertex<E> vertex, Integer nuevaDistancia, ListLinked<Vertex<E>> vertices, ListLinked<Integer> distancias) {
+        Node<Vertex<E>> vNode = vertices.getHead();
+        Node<Integer> dNode = distancias.getHead();
+        
+        while (vNode != null && dNode != null) {
+            if (vNode.getData().equals(vertex)) {
+                dNode.setData(nuevaDistancia);
+                return;
+            }
+            vNode = vNode.getNext();
+            dNode = dNode.getNext();
+        }
+    }
+    
+    /**
+     * Busca el predecesor de un vértice en las listas paralelas
+     */
+    private Vertex<E> getPredecesor(Vertex<E> vertex, ListLinked<Vertex<E>> vertices, ListLinked<Vertex<E>> predecesores) {
+        Node<Vertex<E>> vNode = vertices.getHead();
+        Node<Vertex<E>> pNode = predecesores.getHead();
+        
+        while (vNode != null && pNode != null) {
+            if (vNode.getData().equals(vertex)) {
+                return pNode.getData();
+            }
+            vNode = vNode.getNext();
+            pNode = pNode.getNext();
+        }
+        return null; // No encontrado
+    }
+    
+    /**
+     * Actualiza el predecesor de un vértice en las listas paralelas
+     */
+    private void setPredecesor(Vertex<E> vertex, Vertex<E> predecesor, ListLinked<Vertex<E>> vertices, ListLinked<Vertex<E>> predecesores) {
+        Node<Vertex<E>> vNode = vertices.getHead();
+        Node<Vertex<E>> pNode = predecesores.getHead();
+        
+        while (vNode != null && pNode != null) {
+            if (vNode.getData().equals(vertex)) {
+                pNode.setData(predecesor);
+                return;
+            }
+            vNode = vNode.getNext();
+            pNode = pNode.getNext();
+        }
+    }
+
     // ==================== MÉTODOS AUXILIARES ====================
 
     /**
@@ -635,5 +1258,4 @@ public class GraphLink<E>{
         // Si el grafo no es dirigido, cada arista se cuenta dos veces
         return directed ? total : total / 2;
     }
-}
 }

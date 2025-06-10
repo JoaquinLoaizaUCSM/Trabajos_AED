@@ -22,6 +22,10 @@ public class Edges<E> {
         return weight;
     }
 
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
     @Override
     public String toString() {
         if(this.weight > -1) return resDet.getData() + "["+this.weight+"], ";
