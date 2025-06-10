@@ -1,8 +1,8 @@
 // filepath: /workspaces/Trabajos_AED/Semana_9/TestBFS.java
 package Semana_9;
 
-import Semana_9.graph.ArrayListLink;
 import Semana_9.graph.GraphLink;
+import Semana_9.list.ArrayListLink;
 
 public class TestBFS {
     public static void main(String[] args) {

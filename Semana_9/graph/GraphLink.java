@@ -1,9 +1,11 @@
 package Semana_9.graph;
 
+import Semana_9.list.ArrayListLink;
 import Semana_9.list.ExceptionIsEmpty;
 import Semana_9.list.ListLinked;
 import Semana_9.list.Node;
 import Semana_9.list.QueueLink;
+import Semana_9.list.StackLink;
 
 public class GraphLink<E>{
 

@@ -1,6 +1,4 @@
-package Semana_9.graph;
-
-import Semana_9.list.Node;
+package Semana_9.list;
 
 /**
  * Implementación propia de Stack usando enlaces

@@ -1,7 +1,7 @@
 package Semana_9;
 
-import Semana_9.graph.ArrayListLink;
 import Semana_9.graph.GraphLink;
+import Semana_9.list.ArrayListLink;
 
 public class TestDijkstra {
     public static void main(String[] args) {
@@ -41,10 +41,10 @@ public class TestDijkstra {
 
         // Probar Dijkstra con Stack
         System.out.println("\n=== DIJKSTRA CON STACK ===");
-        Semana_9.graph.StackLink<String> stack1 = graph.dijkstra("A", "E");
+        Semana_9.list.StackLink<String> stack1 = graph.dijkstra("A", "E");
         graph.mostrarStack(stack1, "Camino A -> E");
 
-        Semana_9.graph.StackLink<String> stack2 = graph.dijkstra("B", "E");
+        Semana_9.list.StackLink<String> stack2 = graph.dijkstra("B", "E");
         graph.mostrarStack(stack2, "Camino B -> E");
 
         // Probar con vértice aislado
