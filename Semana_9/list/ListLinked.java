@@ -1,8 +1,6 @@
 // package list
 package Semana_9.list;
 
-import Semana_9.graph.Edges;
-
 public class ListLinked<E> {
     private Node<E> head;
     private int size;
