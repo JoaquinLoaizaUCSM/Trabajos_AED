@@ -113,43 +113,53 @@ public class GraphLink<E>{
         }
         Vertex<E> v1 = findVertexData(data1);
         Vertex<E> v2 = findVertexData(data2);
+    if (v1 == null || v2 == null) {
+        System.out.println("No se encontró algunos de los nodos");
+        return;
+    }
 
-        if (v1 == null || v2 == null) {
-            System.out.println("No se encontro algunos de los nodos");
-            return ;
-        }
+    boolean removed = false;
+    Node<Edges<E>> current = v1.listAdj.getHead();
+    Node<Edges<E>> previous = null;
 
-        Node<Edges<E>> current = v1.listAdj.getHead();
-        Node<Edges<E>> previous = null;
-
-        while (current != null) {
-            if (current.getData().getResDet().equals(v2)) {
-                // Arista encontrada, removerla
-                if (previous == null) {
-                    // Es el primer nodo
-                    v1.listAdj = new ListLinked<Edges<E>>();
-                    Node<Edges<E>> next = current.getNext();
-                    while (next != null) {
-                        v1.listAdj.add(next.getData());
-                        next = next.getNext();
-                    }
-                } else {
-                    previous.setNext(current.getNext());
-                }
-                System.out.println("Arista eliminada exitosamente");
-
-                if (!directed) {
-                    // Si es no dirigido, eliminar la arista en el otro sentido
-                    removeEdge(data2, data1);
-                }
-                return;
+    while (current != null) {
+        if (current.getData().getResDet().equals(v2)) {
+            // Eliminar la arista sin recrear la lista
+            if (previous == null) {
+                v1.listAdj.setHead(current.getNext());
+            } else {
+                previous.setNext(current.getNext());
             }
-            previous = current;
-            current = current.getNext();
+            removed = true;
+            break;
         }
+        previous = current;
+        current = current.getNext();
+    }
 
+    if (removed) {
+        System.out.println("Arista eliminada exitosamente");
+        if (!directed) {
+            // Eliminar la arista inversa de v2 a v1 de forma iterativa
+            Node<Edges<E>> currRev = v2.listAdj.getHead();
+            Node<Edges<E>> prevRev = null;
+            while (currRev != null) {
+                if (currRev.getData().getResDet().equals(v1)) {
+                    if (prevRev == null) {
+                        v2.listAdj.setHead(currRev.getNext());
+                    } else {
+                        prevRev.setNext(currRev.getNext());
+                    }
+                    break;
+                }
+                prevRev = currRev;
+                currRev = currRev.getNext();
+            }
+        }
+    } else {
         System.out.println("No se encontró la arista a eliminar");
     }
+}
 
     private boolean isVisited(ListLinked<Vertex<E>> visited, Vertex<E> vertex) {
         Node<Vertex<E>> current = visited.getHead();
@@ -1205,7 +1215,7 @@ public class GraphLink<E>{
         
         while (vNode != null && pNode != null) {
             if (vNode.getData().equals(vertex)) {
-                return pNode.getData();
+                return pNode.getData(); // Puede ser null para el vértice inicial
             }
             vNode = vNode.getNext();
             pNode = pNode.getNext();

@@ -1,5 +1,8 @@
 // package list
 package Semana_9.list;
+
+import Semana_9.graph.Edges;
+
 public class ListLinked<E> {
     private Node<E> head;
     private int size;
@@ -88,6 +91,10 @@ public class ListLinked<E> {
     public boolean isEmpty() { return size == 0; }
     
     public Node<E> getHead() { return head; }
+
+    public void setHead(Node<E> next) {
+        this.head = (Node<E>) next;
+    }
 
 
     public String toString() {
