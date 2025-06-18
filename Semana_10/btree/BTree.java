@@ -354,7 +354,7 @@ public class BTree<E extends Comparable<E>> {
         }
     }
 
-    /* =====  CONSTRUCCIÓN DESDE EL ARCHIVO  ===== */
+    /* Ejercicio 3*/
     public static BTree<Integer> building_Btree(String path) throws ItemNoFound {
 
         /* ---------- 1. Lectura secuencial de las líneas ---------- */
