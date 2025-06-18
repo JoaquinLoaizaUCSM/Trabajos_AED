@@ -1,6 +1,12 @@
 package Semana_10.btree;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import Semana_10.list.ListLinked;
+import Semana_10.list.Node;
 
 public class BTree<E extends Comparable<E>> { 
     private BNode<E> root; 
@@ -348,8 +354,163 @@ public class BTree<E extends Comparable<E>> {
         }
     }
 
+    /* =====  CONSTRUCCIÓN DESDE EL ARCHIVO  ===== */
+    public static BTree<Integer> building_Btree(String path) throws ItemNoFound {
 
+        /* ---------- 1. Lectura secuencial de las líneas ---------- */
+        BufferedReader in;
+        try { in = new BufferedReader(new FileReader(path)); 
+        }
+        catch (IOException ex) { throw new ItemNoFound("No se puede abrir el archivo"); 
+        }
 
+        String linea;
+        int numeroLinea = 0;                // 0‑based
+        int orden = 0;                      // se leerá en la línea 0
+
+        ListLinked<BNode<Integer>> nodos = new ListLinked<>();   // nodos en orden de aparición
+
+        try {
+            while ((linea = in.readLine()) != null) {
+                linea = linea.trim();
+                if (linea.length() == 0) continue;               // ignorar líneas vacías
+
+                /* -- Línea 0: sólo el orden del B‑Tree -- */
+                if (numeroLinea == 0) {
+                    orden = Integer.parseInt(linea);
+                    if (orden < 3) throw new ItemNoFound("Orden inválido (<3)");
+                    numeroLinea++;
+                    continue;
+                }
+
+                /* -- Resto de líneas:  nivel,id,clave1,clave2,… -- */
+                String[] partes = linea.split(",");
+                if (partes.length < 3)                     // nivel, id, al menos 1 clave
+                    throw new ItemNoFound("Formato incorrecto en línea " + (numeroLinea + 1));
+
+                /* datos de cabecera */
+                int idNodo    = Integer.parseInt(partes[1].trim());
+
+                /* construir nodo “vacío” del tamaño adecuado */
+                BNode<Integer> nodo = new BNode<>(orden);
+                nodo.idNode = idNodo;
+
+                /* cargar claves */
+                int k = 0;
+                for (int i = 2; i < partes.length; i++) {
+                    int clave = Integer.parseInt(partes[i].trim());
+                    nodo.keys.set(k, clave);   // la lista internamente ya trae ‘null’s
+                    k++;
+                }
+                nodo.count = k;                // nº de claves realmente almacenadas
+
+                nodos.add(nodo);               // queda registrado manteniendo el orden
+                numeroLinea++;
+            }
+            in.close();
+        } catch (IOException ex) { throw new ItemNoFound("Error leyendo el archivo"); }
+
+        /* ---------- 2. Verificaciones básicas ---------- */
+        if (orden == 0)               throw new ItemNoFound("El archivo está vacío");
+        if (nodos.isEmpty())          return new BTree<>(orden);      // árbol vacío
+
+        /* ---------- 3. Enlazado padre‑hijo SIN ArrayList/Queue ---------- *
+         *    El archivo está en recorrido por niveles (raíz, nivel 1, …).
+         *    Avanzamos con dos índices sobre la lista enlazada:
+         *       parentIdx:  nodo que actúa como padre
+         *       nextChild:  próximo nodo “libre” que tocará enlazar como hijo
+         */
+        int totalNodos = nodos.size();
+        int parentIdx  = 0;
+        int nextChild  = 1;                          // el 0 ya es la raíz
+
+        BTree<Integer> arbol = new BTree<>(orden);
+        arbol.root = elementoEn(nodos, 0);           // función auxiliar – acceso O(n)
+
+        while (parentIdx < totalNodos && nextChild < totalNodos) {
+            BNode<Integer> padre = elementoEn(nodos, parentIdx);
+
+            int hijosNecesarios = padre.count + 1;   // regla del B‑Tree
+            for (int h = 0; h < hijosNecesarios && nextChild < totalNodos; h++) {
+                BNode<Integer> hijo = elementoEn(nodos, nextChild);
+                padre.childs.set(h, hijo);           // posición ‘h’
+                nextChild++;
+            }
+            parentIdx++;
+        }
+
+        if (nextChild != totalNodos)   // quedaron sueltos o faltaron
+            throw new ItemNoFound("Estructura inconsistente padre‑hijo");
+
+        /* ---------- 4. Validación exhaustiva ---------- */
+        int[] nivelHoja = {-1};                      // se define una vez; se “pasa por referencia”
+        validarRec(arbol.root, null, null, 0, nivelHoja, orden);
+
+        return arbol;                                // ¡Árbol correcto!
+    }
+
+    /** Devuelve el elemento de una ListLinked en la posición ‘idx’*/
+    private static <T> T elementoEn(ListLinked<T> lista, int idx) {
+        Node<T> p = lista.getHead();
+        int i = 0;
+        while (p != null) {
+            if (i == idx) return p.getData();
+            p = p.getNext();
+            i++;
+        }
+        return null;    // nunca debería ocurrir si los índices son válidos
+    }
+
+    /** Validación recursiva de todas las propiedades de un B‑Tree. */
+    private static void validarRec(BNode<Integer> n,
+                                   Integer min, Integer max,
+                                   int nivel,
+                                   int[] nivelHoja,
+                                   int orden) throws ItemNoFound {
+
+        /* 4.1 – Claves ordenadas y en rango */
+        for (int i = 0; i < n.count - 1; i++)
+            if (n.keys.get(i) >= n.keys.get(i + 1))
+                throw new ItemNoFound("Claves desordenadas en nodo " + n.idNode);
+
+        if (min != null && n.keys.get(0) <= min)
+            throw new ItemNoFound("Clave fuera de rango en nodo " + n.idNode);
+        if (max != null && n.keys.get(n.count - 1) >= max)
+            throw new ItemNoFound("Clave fuera de rango en nodo " + n.idNode);
+
+        /* 4.2 – Cantidad de claves */
+        int minKeys = (orden % 2 == 0) ? (orden / 2 - 1)       // ⌈(m/2)⌉‑1
+                                       : ((orden - 1) / 2);
+        int maxKeys = orden - 1;
+
+        if ((nivel == 0 && n.count == 0) ||   // raíz debe tener ≥1
+            (nivel > 0  && (n.count < minKeys || n.count > maxKeys)))
+            throw new ItemNoFound("Tamaño inválido en nodo " + n.idNode);
+
+        /* 4.3 – ¿Hoja?  entonces todas las hojas al mismo nivel */
+        boolean esHoja = (n.childs.get(0) == null);
+        if (esHoja) {
+            if (nivelHoja[0] == -1)         nivelHoja[0] = nivel;
+            else if (nivelHoja[0] != nivel) throw new ItemNoFound("Hojas en niveles distintos");
+            return;                         // nada más que revisar
+        }
+
+        /* 4.4 – Propiedades recursivas en los hijos */
+        if (n.count + 1 > orden)
+            throw new ItemNoFound("Demasiados hijos en nodo " + n.idNode);
+
+        for (int i = 0; i <= n.count; i++) {
+            BNode<Integer> hijo = n.childs.get(i);
+            if (hijo == null)
+                throw new ItemNoFound("Hijo faltante en nodo " + n.idNode);
+
+            Integer nuevoMin = (i == 0)         ? min
+                               : n.keys.get(i - 1);
+            Integer nuevoMax = (i == n.count)   ? max
+                               : n.keys.get(i);
+            validarRec(hijo, nuevoMin, nuevoMax, nivel + 1, nivelHoja, orden);
+        }
+    }
 
     public static void main(String[] args) {
         BTree<Integer> btree = new BTree<>(3);
@@ -391,5 +552,13 @@ public class BTree<E extends Comparable<E>> {
         System.out.println("\nEliminando el 10 (clave interna, causa fusión y cambio de raíz):");
         btree.remove(10);
         System.out.println(btree);
+
+        try {
+            BTree<Integer> t = BTree.building_Btree("Semana_10/arbolB.txt");
+            System.out.println(t);
+        } catch (ItemNoFound ex) {
+            System.err.println("Árbol inválido: " + ex.getMessage());
+        }
+
     }
 }
