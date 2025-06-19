@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import Semana_10.RegistroEstudiante;
 import Semana_10.list.ListLinked;
 import Semana_10.list.Node;
 
@@ -512,6 +513,23 @@ public class BTree<E extends Comparable<E>> {
         }
     }
 
+    //Ejercicio 4
+    public String buscarNombre(int codigo) {
+        RegistroEstudiante claveBusqueda = new RegistroEstudiante(codigo, "");
+        BNode<E> current = this.root;
+        int[] pos = new int[1];
+
+        while (current != null) {
+            if (current.searchNode((E) claveBusqueda, pos)) {
+                RegistroEstudiante encontrado = (RegistroEstudiante) current.keys.get(pos[0]);
+                return encontrado.getNombre();
+            }
+            current = current.childs.get(pos[0]);
+        }
+        return "No encontrado";
+    }
+    
+
     public static void main(String[] args) {
         BTree<Integer> btree = new BTree<>(3);
         btree.insert(10);
@@ -560,5 +578,38 @@ public class BTree<E extends Comparable<E>> {
             System.err.println("Árbol inválido: " + ex.getMessage());
         }
 
+          System.out.println("\n--- Ejercicio 4: BTree con RegistroEstudiante ---");
+        BTree<RegistroEstudiante> arbolEstudiantes = new BTree<>(4);
+
+        // Insertar estudiantes
+        arbolEstudiantes.insert(new RegistroEstudiante(103, "Ana"));
+        arbolEstudiantes.insert(new RegistroEstudiante(110, "Luis"));
+        arbolEstudiantes.insert(new RegistroEstudiante(101, "Carlos"));
+        arbolEstudiantes.insert(new RegistroEstudiante(120, "Lucía"));
+        arbolEstudiantes.insert(new RegistroEstudiante(115, "David"));
+        arbolEstudiantes.insert(new RegistroEstudiante(125, "Jorge"));
+        arbolEstudiantes.insert(new RegistroEstudiante(140, "Camila"));
+        arbolEstudiantes.insert(new RegistroEstudiante(108, "Rosa"));
+        arbolEstudiantes.insert(new RegistroEstudiante(132, "Ernesto"));
+        arbolEstudiantes.insert(new RegistroEstudiante(128, "Denis"));
+        arbolEstudiantes.insert(new RegistroEstudiante(145, "Enrique"));
+        arbolEstudiantes.insert(new RegistroEstudiante(122, "Karina"));
+        arbolEstudiantes.insert(new RegistroEstudiante(108, "Juan"));  // Duplicado, no se insertará
+
+        System.out.println("\nBuscar código 115: " + arbolEstudiantes.buscarNombre(115));  // David
+        System.out.println("Buscar código 132: " + arbolEstudiantes.buscarNombre(132));  // Ernesto
+        System.out.println("Buscar código 999: " + arbolEstudiantes.buscarNombre(999));  // No encontrado
+
+        System.out.println("\nEliminar código 101 (Carlos)");
+        arbolEstudiantes.remove(new RegistroEstudiante(101, ""));
+        System.out.println(arbolEstudiantes);
+
+        System.out.println("\nInsertar nuevo estudiante (106, Sara)");
+        arbolEstudiantes.insert(new RegistroEstudiante(106, "Sara"));
+        System.out.println("Buscar código 106: " + arbolEstudiantes.buscarNombre(106));  // Sara
+
+        System.out.println("\nÁrbol final:");
+        System.out.println(arbolEstudiantes);
+        
     }
 }
