@@ -7,7 +7,7 @@ package Trabajos_AED.Semana_11;
         private int size;
 
         public Hash0(int size) {
-            this.size = size;
+            this.size = siguientePrimo(size);
             this.table = new LinkedList[size];
             for (int i = 0; i < size; i++) 
             {
@@ -59,6 +59,23 @@ package Trabajos_AED.Semana_11;
                 }
             }
             System.out.println("Clave " + key + " no encontrada para eliminar");
+        }
+
+        private int siguientePrimo(int n) 
+        {
+            while (!Primo(n)) 
+            {
+                n++;
+            }
+            return n;
+        }
+    
+        private boolean Primo(int num) {
+            if (num <= 1) return false;
+            for (int i = 2; i <= Math.sqrt(num); i++) {
+                if (num % i == 0) return false;
+            }
+            return true;
         }
 
         public void printTable() 
