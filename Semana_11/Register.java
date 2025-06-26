@@ -1,27 +1,24 @@
-package Trabajos_AED.Semana_11;
-public class Register
-{
-    private int key;
-    private String name;
+package Semana_11;
 
-    public Register(int key, String name) 
-    {
+public class Register<K, V> {
+    private K key;
+    private V value;
+
+    public Register(K key, V value) {
         this.key = key;
-        this.name = name;
+        this.value = value;
     }
 
-    public int getKey() 
-    {
+    public K getKey() {
         return key;
     }
 
-    public String getName() 
-    {
-        return name;
+    public V getValue() {
+        return value;
     }
-    
-    public String toString() 
-    {
-        return "Register [" + "key=" + key + ", name='" + name + '\'' +']';
+
+    @Override
+    public String toString() {
+        return "Register [key=" + key + ", value='" + value + "']";
     }
 }

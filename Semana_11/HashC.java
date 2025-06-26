@@ -1,45 +1,37 @@
-package Trabajos_AED.Semana_11;
+package Semana_11;
 
-public class HashC 
-{
-    private static class Element 
-    {
-        Register register;
+public class HashC<K, V> {
+    private static class Element<K, V> {
+        Register<K, V> register;
         int mark; 
 
-        public Element() 
-        {
+        public Element() {
             this.register = null;
             this.mark = 0;
         }
     }
 
-    private Element[] table;
+    private Element<K, V>[] table;
     private int size;
 
-    public HashC(int size) 
-    {
+    public HashC(int size) {
         this.size = size;
         table = new Element[size];
-        for (int i = 0; i < size; i++) 
-        {
-            table[i] = new Element();
+        for (int i = 0; i < size; i++) {
+            table[i] = new Element<K, V>();
         }
     }
 
-    public int hash(int key) 
-    {
-        return key % size;
+    public int hash(K key) {
+        return Math.abs(key.hashCode()) % size;
     }
 
-    public void insert(Register reg) 
-    {
+    public void insert(Register<K, V> reg) {
         int index = hash(reg.getKey());
         int startIndex = index;
 
         do {
-            if (table[index].mark == 0 || table[index].mark == -1) 
-            {
+            if (table[index].mark == 0 || table[index].mark == -1) {
                 table[index].register = reg;
                 table[index].mark = 1; 
                 return;
@@ -50,7 +42,7 @@ public class HashC
         System.out.println("La tabla  llena");
     }
 
-    public Register search(int key) {
+    public Register<K, V> search(K key) {
         int index = hash(key);
         int startIndex = index;
 
@@ -58,7 +50,7 @@ public class HashC
             if (table[index].mark == 0) {
                 return null; // nunca ocupado, paramos
             }
-            if (table[index].mark == 1 && table[index].register.getKey() == key) {
+            if (table[index].mark == 1 && table[index].register.getKey().equals(key)) {
                 return table[index].register;
             }
             index = (index + 1) % size;
@@ -67,13 +59,12 @@ public class HashC
         return null;
     }
 
-    public void delete(int key) {
+    public void delete(K key) {
         int index = hash(key);
         int startIndex = index;
 
         do {
-            if (table[index].mark == 1 && table[index].register.getKey() == key) 
-            {
+            if (table[index].mark == 1 && table[index].register.getKey().equals(key)) {
                 table[index].mark = -1; // eliminado
                 return;
             }
